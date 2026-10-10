@@ -40,7 +40,8 @@ def upscale(model, img, tile=320, pad=16):
 def main():
     out_dir = sys.argv[1]
     os.makedirs(out_dir, exist_ok=True)
-    sr = ModelLoader().load_from_file(f"{MODELS}/RealESRGAN_x4plus.pth").model.eval()
+    sr_model = os.environ.get("SR_MODEL", "RealESRGAN_x4plus.pth")
+    sr = ModelLoader().load_from_file(f"{MODELS}/{sr_model}").model.eval()
     depth = pipeline("depth-estimation", model="depth-anything/Depth-Anything-V2-Large-hf")
     for arg in sys.argv[2:]:
         name, path = arg.split("=", 1)

@@ -17,6 +17,7 @@ import numpy as np
 W, H, FPS = 1080, 1920, 30
 SRC_SCALE = 3  # prep_assets upscale factor; shot coords below are in original px
 ZN, ZF = 1.0, 4.0  # depth range mapped from disparity
+PARALLAX = 0.35  # global strength of camera translation
 rng = np.random.default_rng(3)
 
 
@@ -46,7 +47,7 @@ BALANCE = {
 #   sway     curtain regions (x0, x1, y0, y1, feather)
 SHOTS = [
     dict(img="dining", dur=3.2, a=(1150, 440, 820), b=(880, 440, 800),
-         t0=(0.10, 0, 0), t1=(-0.10, 0, 0.12), focus=((880, 420), (880, 420)), dof=3,
+         t0=(0.10, 0, 0), t1=(-0.10, 0, 0.12), focus=((880, 420), (880, 420)), dof=1.5,
          sway=[(1345, 1774, 0, 887, 40)]),
     dict(img="dining", dur=2.6, a=(830, 330, 470), b=(830, 345, 410),
          t0=(0, 0, 0), t1=(0, 0, 0.12), focus=((825, 160), (830, 380)), dof=7, cut="dissolve"),
@@ -63,7 +64,7 @@ SHOTS = [
          t0=(-0.08, 0, 0.04), t1=(0.08, 0, 0), focus=((1350, 380), (1350, 380)), dof=4,
          cut="dissolve"),
     dict(img="dining", dur=3.8, a=(880, 420, 620), b=(880, 440, 840),
-         t0=(0, 0, 0.18), t1=(0, 0, 0), focus=((880, 420), (880, 420)), dof=3,
+         t0=(0, 0, 0.18), t1=(0, 0, 0), focus=((880, 420), (880, 420)), dof=1.5,
          sway=[(1345, 1774, 0, 887, 40)]),
 ]
 DISSOLVE = 10  # frames
@@ -73,7 +74,9 @@ class Asset:
     def __init__(self, d, name):
         bgr = cv2.imread(f"{d}/{name}.png").astype(np.float32)
         b, g, r, gain = BALANCE[name]
-        self.img = np.clip(bgr * np.array([b, g, r], np.float32) * gain, 0, 255)
+        # brighten with a gamma lift (not linear gain) so lamps/highlights don't clip
+        f = np.clip(bgr * np.array([b, g, r], np.float32), 0, 255) / 255
+        self.img = 255 * f ** (1 / gain)
         disp = np.load(f"{d}/{name}_depth.npy")
         # grow foreground edges so objects move as solid shapes
         disp = cv2.dilate(disp, np.ones((9, 9), np.uint8))
@@ -97,7 +100,7 @@ def render_shot(s, assets, gx, gy):
     for i in range(n):
         e = ease(i / (n - 1))
         cx, cy, ch = lerp(s["a"], s["b"], e) * k
-        tx, ty, tz = lerp(s["t0"], s["t1"], e)
+        tx, ty, tz = lerp(s["t0"], s["t1"], e) * PARALLAX
         tsec = i / FPS
         # tiny gimbal float so nothing feels locked-off
         cx += np.sin(0.7 * tsec + drift[0]) * ch * 0.002
@@ -147,8 +150,8 @@ def render_shot(s, assets, gx, gy):
 def grade(f, vig, t):
     f = f / 255.0
     # gentle bloom on highlights
-    hi = np.clip((f - 0.7) / 0.3, 0, 1)
-    f = f + cv2.GaussianBlur(hi, (0, 0), 25) * 0.18
+    hi = np.clip((f - 0.8) / 0.2, 0, 1)
+    f = f + cv2.GaussianBlur(hi, (0, 0), 30) * 0.07
     # soft S-curve, lifted blacks, warm highlights
     f = np.clip(f, 0, 1)
     f = f + 0.25 * f * (1 - f) * (2 * f - 1)  # S-curve: deeper shadows, brighter highs
