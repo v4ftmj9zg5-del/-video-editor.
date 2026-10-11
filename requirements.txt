@@ -1,0 +1,9 @@
+# make_reel.py (Dynamic / Elegant / Auto editing)
+numpy
+opencv-python-headless
+sherpa-onnx>=1.12        # Whisper + Silero VAD on CPU (ONNX)
+# existing still-image tools (camera_reel, parallax_reel, prep_assets)
+pillow
+torch
+transformers
+spandrel

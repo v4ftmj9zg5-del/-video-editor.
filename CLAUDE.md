@@ -41,14 +41,34 @@ Animated stills, virtual camera moves, room transformations, before/after reveal
 animated furniture/decor, colour-palette and material moodboards, architectural
 presentations, cinematic room reveals, children's rooms.
 
+## Raw talking videos: two editing styles (tools/make_reel.py)
+Before editing each raw video, ask her which style (one short question):
+1. Dynamic (Dynamic Reels)  2. Elegant (Elegant Editorial)  3. Auto (analyse and pick).
+Then run: `python3 tools/make_reel.py IN.mp4 OUT.mp4 --style dynamic|elegant|auto
+[--broll DIR] [--title "..."] [--music FILE | --no-music]`.
+- Both styles: silence + retake removal, Hebrew captions (Whisper turbo via sherpa-onnx),
+  natural voice clean-up (-14 LUFS, no pitch/time effects), B-roll, 1080x1920 MP4 < 30 MB.
+- Style settings live in tools/reels/presets.py; tune there, not in the pipeline.
+- B-roll folder: her photos/renders/clips named by what they show (ספה.jpg, מנורה-lamp.png).
+- Models: tools/fetch_models.sh (from GitHub releases; ~560 MB). Tests: tests/README.md.
+- Captions are only as good as the transcript: show her the caption text for long videos.
+- Motion graphics: Remotion (remotion/, `cd remotion && npm install` once) draws captions and
+  content-aware scenes over the cut base video. tools/reels/story.py reads the transcript and plans
+  scenes (big number, mistake badges, furniture line art, lighting change, colour palette, materials,
+  before/after slider, space/dimensions, callouts, CTA); it writes OUT.storyboard.md (Hebrew table).
+  Show her the storyboard; `--plan-only` stops after it. Before/after: put לפני-*.jpg / אחרי-*.jpg in
+  the B-roll folder. Graphics live in remotion/src/graphics/scenes.tsx, themes in remotion/src/theme.ts.
+- `--engine ffmpeg` falls back to libass captions without Remotion. Verify a render with
+  tests/test_motion.py (every scene visible + animated, contact sheet).
+
 ## Instagram Reels spec
 9:16, 1080x1920, H.264 High yuv420p, AAC 48 kHz, +faststart, 30 fps.
 Files sent to the user must be < 30 MB (re-encode with -crf ~20 -maxrate 11M if needed).
 
 ## Technical
 - Tools: FFmpeg (libass/fribidi/harfbuzz), Python (OpenCV, MoviePy, PIL, torch CPU),
-  Real-ESRGAN x4 upscaling + Depth Anything V2 depth (tools/prep_assets.py), faster-whisper
-  for Hebrew transcription. No GPU: AI steps are slow, so warn the user about render times.
+  Real-ESRGAN x4 upscaling + Depth Anything V2 depth (tools/prep_assets.py), Whisper
+  (sherpa-onnx, tools/reels/transcribe.py) for Hebrew transcription. No GPU: AI steps are slow, so warn the user about render times.
 - Remotion/React/SVG are options for heavy motion-graphics work (Node 22 available).
 - Never claim a video is rendered unless the file exists; check frames before sending.
 - Music: the user adds licensed/trending audio in Instagram, or supplies a file she has rights to.
