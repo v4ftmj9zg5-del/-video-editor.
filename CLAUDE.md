@@ -52,6 +52,14 @@ Then run: `python3 tools/make_reel.py IN.mp4 OUT.mp4 --style dynamic|elegant|aut
 - B-roll folder: her photos/renders/clips named by what they show (ספה.jpg, מנורה-lamp.png).
 - Models: tools/fetch_models.sh (from GitHub releases; ~560 MB). Tests: tests/README.md.
 - Captions are only as good as the transcript: show her the caption text for long videos.
+- Motion graphics: Remotion (remotion/, `cd remotion && npm install` once) draws captions and
+  content-aware scenes over the cut base video. tools/reels/story.py reads the transcript and plans
+  scenes (big number, mistake badges, furniture line art, lighting change, colour palette, materials,
+  before/after slider, space/dimensions, callouts, CTA); it writes OUT.storyboard.md (Hebrew table).
+  Show her the storyboard; `--plan-only` stops after it. Before/after: put לפני-*.jpg / אחרי-*.jpg in
+  the B-roll folder. Graphics live in remotion/src/graphics/scenes.tsx, themes in remotion/src/theme.ts.
+- `--engine ffmpeg` falls back to libass captions without Remotion. Verify a render with
+  tests/test_motion.py (every scene visible + animated, contact sheet).
 
 ## Instagram Reels spec
 9:16, 1080x1920, H.264 High yuv420p, AAC 48 kHz, +faststart, 30 fps.

@@ -93,7 +93,8 @@ def run_case(fx, out_dir, clip, style, title):
     work = os.path.join(out_dir, f"work_{clip}_{style}")
     out = os.path.join(out_dir, f"{clip}_{style}.mp4")
     res = make_reel.main([os.path.join(fx, clip + ".mp4"), out, "--style", style,
-                          "--broll", os.path.join(fx, "broll"), "--title", title, "--keep-work", work])
+                          "--broll", os.path.join(fx, "broll"), "--title", title, "--keep-work", work,
+                          "--engine", "ffmpeg"])  # caption checks read captions.ass
     return out, work, res["style"]
 
 

@@ -97,20 +97,27 @@ def make_grade(kind):
     return apply
 
 
-def render(src, timeline, placements, preset, ass, audio, out, log=print):
+def render(src, timeline, placements, preset, ass, audio, out, log=print, progress_bar=None):
+    """ass/audio may be None: then this writes a silent, caption-free base video
+    (high quality) for the Remotion motion-graphics pass."""
     dur = timeline[-1]["out_e"]
     n_out = int(round(dur * FPS))
     grade = make_grade(preset["grade"])
-    vf = f"ass={ass}"
+    if progress_bar is None:
+        progress_bar = preset["progress_bar"]
+    filters = [f"ass={ass}"] if ass else []
     if preset["name"] == "elegant":
-        vf = f"fade=in:st=0:d=0.35,fade=out:st={max(0, dur - 0.5):.3f}:d=0.5," + vf
+        filters.insert(0, f"fade=in:st=0:d=0.35,fade=out:st={max(0, dur - 0.5):.3f}:d=0.5")
     enc = ["ffmpeg", "-v", "error", "-y",
-           "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-           "-i", audio, "-vf", vf, "-map", "0:v", "-map", "1:a",
-           "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-maxrate", "11M", "-bufsize", "22M",
-           "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(FPS),
-           "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart",
-           "-shortest", out]
+           "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-"]
+    if audio:
+        enc += ["-i", audio, "-map", "0:v", "-map", "1:a", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-shortest"]
+    if filters:
+        enc += ["-vf", ",".join(filters)]
+    q = ["-crf", "19", "-maxrate", "11M", "-bufsize", "22M", "-preset", "medium"] if audio else \
+        ["-crf", "14", "-preset", "veryfast"]
+    enc += ["-c:v", "libx264"] + q + ["-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(FPS),
+                                      "-movflags", "+faststart", out]
     ff = subprocess.Popen(enc, stdin=subprocess.PIPE)
     rd = Reader(src)
     sources = {}
@@ -168,7 +175,7 @@ def render(src, timeline, placements, preset, ass, audio, out, log=print):
             else:
                 frame = bfr
         frame = grade(frame, k)
-        if preset["progress_bar"]:
+        if progress_bar:
             x1 = int(W * (k + 1) / n_out)
             ov = frame.copy()
             cv2.rectangle(ov, (0, 226), (x1, 234), (71, 217, 255), -1)

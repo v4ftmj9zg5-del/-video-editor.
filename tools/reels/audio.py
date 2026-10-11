@@ -93,12 +93,19 @@ def sfx_source(kind):
                 "afade=t=in:d=0.5,afade=t=out:st=0.5:d=0.5,volume=0.10")
     if kind == "tick":  # short soft click on punch-ins
         return "sine=f=1900:d=0.05:r=48000,afade=t=out:d=0.05:curve=exp,volume=0.10"
+    if kind == "pop":  # short bright blip with a downward pitch
+        return ("aevalsrc='0.5*sin(2*PI*t*(900-2600*t))*exp(-t*28)':d=0.18:s=48000,volume=0.35")
+    if kind == "click":
+        return "anoisesrc=c=white:d=0.03:a=0.8:r=48000,highpass=f=2000,afade=t=out:d=0.03,volume=0.35"
+    if kind == "shimmer":
+        return ("sine=f=1760:d=1.4:r=48000,tremolo=f=9:d=0.4,afade=t=in:d=0.05,"
+                "afade=t=out:st=0.1:d=1.3:curve=exp,volume=0.05")
     if kind == "hit":
         return "sine=f=55:d=1.2:r=48000,afade=t=out:d=1.2:curve=exp,volume=0.5"
     raise ValueError(kind)
 
 
-LEAD = {"whoosh": 0.4, "air": 0.5, "tick": 0.0, "hit": 0.0}
+LEAD = {"whoosh": 0.4, "air": 0.5, "tick": 0.0, "hit": 0.0, "pop": 0.0, "click": 0.0, "shimmer": 0.0}
 
 
 def mix(voice, out, dur, preset, sfx=(), music=None):
