@@ -2,7 +2,8 @@
 
 Usage: covers.py SPEC.json OUT_DIR
 SPEC is a list of {"name", "src", "label", "title", "crop": [x0, y0, w] (normalised,
-card-aspect height derived), "clean_yellow": bool (inpaint burned-in yellow text)}.
+card-aspect height derived), "tone": cream|rose|sage (background family),
+"clean_yellow": bool (remove burned-in yellow text), "keep": person box}.
 Writes OUT_DIR/<name>.jpg at 1080x1920. The profile grid shows the central 3:4
 window (y 240..1680), so title and card both sit inside it.
 """
@@ -15,9 +16,13 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H = 1080, 1920
-BG = (241, 235, 227)
-INK = (63, 52, 44)
-TAUPE = (154, 134, 118)
+INK = (74, 50, 38)  # chocolate brown
+# Soft palette: cream, antique pink, sage — background + matching accent.
+TONES = {
+    "cream": ((245, 237, 225), (140, 100, 78)),
+    "rose": ((232, 210, 202), (160, 106, 100)),
+    "sage": ((213, 221, 203), (100, 118, 92)),
+}
 CARD = (90, 650, 990, 1610)  # 900x960, inside the 3:4 grid window
 FONTS = os.path.expanduser("~/.fonts")
 
@@ -99,20 +104,21 @@ def card_image(spec):
 def render(spec, out):
     rng = np.random.default_rng(7)
     grain = rng.normal(0, 2.2, (H, W, 1))
-    canvas = Image.fromarray((np.array(BG, np.float32) + grain).clip(0, 255).astype(np.uint8))
+    bg, accent = TONES[spec.get("tone", "cream")]
+    canvas = Image.fromarray((np.array(bg, np.float32) + grain).clip(0, 255).astype(np.uint8))
 
     # soft card shadow
     sh = Image.new("L", (W, H), 0)
     ImageDraw.Draw(sh).rectangle((CARD[0], CARD[1] + 18, CARD[2], CARD[3] + 18), fill=70)
     sh = sh.filter(ImageFilter.GaussianBlur(28))
-    canvas = Image.composite(Image.new("RGB", (W, H), (120, 100, 85)), canvas, sh)
+    canvas = Image.composite(Image.new("RGB", (W, H), (110, 82, 66)), canvas, sh)
     canvas.paste(card_image(spec), CARD[:2])
 
     d = ImageDraw.Draw(canvas)
     lab = font("Heebo.ttf", 38, 400)
-    d.text((W / 2, 330), spec["label"], font=lab, fill=TAUPE, anchor="mm",
+    d.text((W / 2, 330), spec["label"], font=lab, fill=accent, anchor="mm",
            direction="rtl", language="he")
-    d.line((W / 2 - 40, 378, W / 2 + 40, 378), fill=TAUPE, width=2)
+    d.line((W / 2 - 40, 378, W / 2 + 40, 378), fill=accent, width=2)
 
     tf = font("FrankRuhlLibre.ttf", 92, 600)
     lines = spec["title"].split("\n")
