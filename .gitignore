@@ -2,3 +2,4 @@ output/
 __pycache__/
 *.mp4
 *.mov
+tools/client_kit/sample/

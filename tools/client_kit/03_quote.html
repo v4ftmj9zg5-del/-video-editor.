@@ -1,0 +1,83 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>הצעת מחיר</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  .price { display: flex; align-items: baseline; gap: 3mm; margin: 2mm 0 1mm; }
+  .price .num { font-family: "Frank Ruhl Libre"; font-weight: 600; font-size: 28pt; }
+  .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 5mm 0 2mm; }
+  .meta .card { padding: 4mm 5mm; }
+  .meta .k { font-size: 8.5pt; color: var(--muted); }
+  .meta .v { font-weight: 500; font-size: 11pt; }
+  ol.terms { padding-inline-start: 5mm; margin: 0; font-size: 9pt; }
+  ol.terms li { margin-bottom: 1.6mm; }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 8mm; }
+</style></head><body>
+
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow">הצעת מחיר · <span class="ph">{{תאריך}}</span></div>
+  <h1>החדר של <span class="ph">{{שם הילד/ה}}</span></h1>
+  <p class="lead">ל<span class="ph">{{שם הלקוחה}}</span>, תודה על השיחה! הנה כל מה שכלול בעיצוב, כדי שיהיה לך ברור בדיוק מה מקבלים.</p>
+
+  <div class="meta">
+    <div class="card"><div class="k">החבילה</div><div class="v">חדר בקופסה · עיצוב אונליין</div></div>
+    <div class="card"><div class="k">זמן עבודה</div><div class="v"><span class="ph">{{10}}</span> ימי עבודה</div></div>
+    <div class="card"><div class="k">תוקף ההצעה</div><div class="v"><span class="ph">{{14}}</span> יום</div></div>
+  </div>
+
+  <h2>מה כלול</h2>
+  <ol class="steps">
+    <li><strong>שיחת היכרות ושאלון אישי.</strong> מכירים את הילד/ה, את הטעם שלך ואת התקציב.</li>
+    <li><strong>לוח השראה וכיוון עיצובי.</strong> פלטת צבעים, חומרים ופריטים מרכזיים, לאישורך לפני שממשיכים.</li>
+    <li><strong>הדמיה של החדר מ-<span class="ph">{{2}}</span> זוויות,</strong> לפי המידות האמיתיות של החדר.</li>
+    <li><strong>רשימת קניות מלאה</strong> עם קישורים, מחירים ומידות, וחלופה חסכונית לפריטים העיקריים.</li>
+    <li><strong>סבב תיקונים אחד</strong> על ההדמיה והרשימה.</li>
+    <li><strong>קובץ מסירה מסודר (PDF)</strong> עם ההדמיה, הרשימה וטיפים לסידור החדר.</li>
+  </ol>
+
+  <div class="card rose" style="margin-top:4mm">
+    <div class="eyebrow" style="margin:0">ההשקעה</div>
+    <div class="price"><span class="num"><span class="ph">{{מחיר}}</span> ₪</span><span class="muted"><span class="ph">{{כולל / לא כולל מע"מ}}</span></span></div>
+    <div class="small">תשלום מראש, ב<span class="ph">{{ביט / העברה / כרטיס}}</span>. העבודה מתחילה לאחר קבלת התשלום, השאלון, המידות והתמונות.</div>
+  </div>
+
+  <h2>תוספות אפשריות</h2>
+  <ul class="tick">
+    <li>סבב תיקונים נוסף · <span class="ph">{{מחיר}}</span> ₪</li>
+    <li>זווית הדמיה נוספת · <span class="ph">{{מחיר}}</span> ₪</li>
+    <li>ביקור ומדידה בבית (באזור <span class="ph">{{אזור}}</span>) · <span class="ph">{{מחיר}}</span> ₪</li>
+  </ul>
+  <div class="folio"><span>הצעת מחיר</span><span>1 מתוך 2</span></div>
+</section>
+
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <h2 style="margin-top:4mm">איך זה עובד</h2>
+  <ol class="steps sage">
+    <li>מאשרים את ההצעה ומשלמים.</li>
+    <li>את שולחת שאלון, מידות ותמונות לפי מדריך המדידה.</li>
+    <li>תוך <span class="ph">{{3}}</span> ימי עבודה מקבלת לוח השראה לאישור.</li>
+    <li>אחרי האישור: הדמיה ורשימת קניות.</li>
+    <li>שולחת לי את כל ההערות בהודעה אחת, ואני מעדכנת.</li>
+    <li>מקבלת את קובץ המסירה הסופי, ויוצאים לקניות 🤍</li>
+  </ol>
+
+  <h2>תנאים</h2>
+  <ol class="terms">
+    <li>העבודה מבוססת על המידות והתמונות שהלקוחה שולחת. האחריות לדיוק המידות היא של הלקוחה, ומומלץ לבדוק מידות של כל פריט מול החדר לפני הזמנה.</li>
+    <li>ההדמיה היא המחשה. ייתכנו הבדלים בגוון, בחומר ובתאורה בין ההדמיה למוצרים במציאות.</li>
+    <li>מחירים, מלאי וזמני אספקה ברשימת הקניות נכונים ליום המסירה, ונקבעים על ידי החנויות. אין לי שליטה עליהם ואינני אחראית להם.</li>
+    <li>ההזמנות מתבצעות ישירות מול החנויות, על ידי הלקוחה. אני לא מוכרת מוצרים ולא אחראית לאיכותם, לאספקה או להרכבה.</li>
+    <li>סבב תיקונים אחד כלול, כאשר כל ההערות נשלחות יחד. שינוי כיוון עיצובי אחרי אישור לוח ההשראה ייחשב כסבב נוסף.</li>
+    <li>זמן העבודה נספר מרגע קבלת כל החומרים. עיכוב בשליחתם דוחה את המסירה בהתאם.</li>
+    <li>העיצוב, ההדמיות והקבצים מיועדים לשימוש אישי של המשפחה. אשמח לשתף את התוצאה בעמוד שלי, רק באישורך.</li>
+    <li>לאחר תחילת העבודה לא יינתן החזר כספי. ביטול לפני תחילת העבודה: <span class="ph">{{החזר מלא / בניכוי X ₪}}</span>.</li>
+  </ol>
+
+  <div class="sign">
+    <div><div class="line"></div><div class="small muted">שם הלקוחה וחתימה</div></div>
+    <div><div class="line"></div><div class="small muted">תאריך</div></div>
+  </div>
+  <p class="small muted" style="margin-top:8mm">תמר · Room Story Tell · <span class="ph">{{טלפון}}</span> · <span class="ph">{{עוסק פטור / מורשה מס׳}}</span></p>
+  <div class="folio"><span>הצעת מחיר</span><span>2 מתוך 2</span></div>
+</section>
+</body></html>
