@@ -7,6 +7,10 @@
   .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 8mm; font-size: 9.5pt; }
   .legend b { display: inline-grid; place-items: center; width: 6mm; height: 6mm; border-radius: 50%;
               background: var(--rose); margin-inline-end: 2mm; font-size: 8.5pt; }
+  .legend > div { display: flex; align-items: center; }
+  .legend .m { flex: 0 0 20mm; margin-inline-start: auto; border-bottom: 1px solid var(--line); height: 6mm; position: relative; }
+  .legend .m::after { content: "ס״מ"; position: absolute; inset-inline-end: -6mm; bottom: .5mm; font-size: 8pt; color: var(--muted); }
+  .legend > div { padding-inline-end: 7mm; }
   .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
   .shot { background: #fff; border: 1px solid var(--line); border-radius: 3mm; padding: 4mm; text-align: center; font-size: 9pt; }
   .shot svg { width: 30mm; height: 22mm; display: block; margin: 0 auto 2mm; }
@@ -62,14 +66,14 @@
   </svg>
 
   <div class="legend">
-    <div><b>A</b>אורך החדר, מקיר לקיר</div>
-    <div><b>B</b>רוחב החדר, מקיר לקיר</div>
-    <div><b>C</b>מהפינה עד תחילת החלון</div>
-    <div><b>D</b>רוחב החלון</div>
-    <div><b>E</b>מהפינה עד הדלת</div>
-    <div><b>F</b>רוחב הדלת + לאיזה צד נפתחת</div>
-    <div><b>G</b>גובה התקרה</div>
-    <div><b>H</b>גובה אדן החלון מהרצפה</div>
+    <div><b>A</b>אורך החדר, מקיר לקיר<span class="m"></span></div>
+    <div><b>B</b>רוחב החדר, מקיר לקיר<span class="m"></span></div>
+    <div><b>C</b>מהפינה עד תחילת החלון<span class="m"></span></div>
+    <div><b>D</b>רוחב החלון<span class="m"></span></div>
+    <div><b>E</b>מהפינה עד הדלת<span class="m"></span></div>
+    <div><b>F</b>רוחב הדלת + לאיזה צד נפתחת<span class="m"></span></div>
+    <div><b>G</b>גובה התקרה<span class="m"></span></div>
+    <div><b>H</b>גובה אדן החלון מהרצפה<span class="m"></span></div>
   </div>
 
   <h2>לסמן גם על הציור</h2>
@@ -79,6 +83,7 @@
     <li>קורות, נישות, עמודים או קיר משופע</li>
     <li>רהיטים שנשארים בחדר, עם רוחב × עומק × גובה</li>
   </ul>
+  <div class="q" style="margin-top:3mm"><label>הערות ומידות נוספות<span class="hint">שקעים, מזגן, רהיטים שנשארים…</span></label><div class="box"></div></div>
   <div class="folio"><span>מדריך מדידה וצילום</span><span>1 מתוך 2</span></div>
 </section>
 
