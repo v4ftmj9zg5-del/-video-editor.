@@ -1,0 +1,97 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>carousel · intro</title>
+<style>
+@font-face { font-family: "Gveret"; src: url("file:///root/.fonts/GveretLevin.ttf"); }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo.ttf"); font-weight: 100 900; }
+:root { --bg: #F0EEE7; --ink: #111; --soft: #3d3a36; --sage: #6E7F5E; --rose: #D9B8AE; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #888; font-family: "Heebo"; }
+.slide { width: 1080px; height: 1350px; background: var(--bg); position: relative; overflow: hidden; direction: rtl; color: var(--ink); margin-bottom: 20px; }
+.handle { position: absolute; top: 106px; left: 108px; direction: ltr; font: 400 25px "Heebo"; letter-spacing: .08em; }
+.bar { position: absolute; bottom: 104px; left: 108px; right: 98px; display: flex; justify-content: space-between; direction: ltr;
+       font: 400 26px "Heebo"; letter-spacing: .02em; align-items: center; }
+.bar span { display: flex; align-items: center; gap: 22px; }
+.bar svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.hand { font-family: "Gveret"; font-size: 84px; line-height: 1.32; position: absolute; right: 80px; left: 80px; }
+.body { font: 300 38px/1.6 "Heebo"; color: var(--soft); position: absolute; right: 108px; left: 108px; }
+.body b { font-weight: 500; color: var(--ink); }
+.photo { position: absolute; object-fit: cover; display: block; }
+
+/* cover */
+.cover { background: #222 url("assets/portrait.jpg") center 30%/cover; color: #fff; }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.62) 0%, rgba(0,0,0,.18) 46%, rgba(0,0,0,0) 62%); }
+.cover > * { z-index: 1; }
+.cover .t1 { position: absolute; right: 100px; bottom: 262px; font: 300 112px/1.05 "Heebo"; letter-spacing: -.01em; }
+.cover .t2 { position: absolute; right: 104px; bottom: 192px; font: 300 40px "Heebo"; opacity: .92; }
+
+.steps { position: absolute; right: 108px; left: 108px; list-style: none; }
+.steps li { display: flex; gap: 34px; align-items: flex-start; margin-bottom: 46px; font: 300 38px/1.45 "Heebo"; color: var(--soft); }
+.steps .n { flex: 0 0 74px; height: 74px; border-radius: 50%; background: #E3E7DA; display: grid; place-items: center;
+            font: 400 38px "Heebo"; color: var(--ink); }
+.dots li { display: flex; align-items: center; gap: 26px; font: 300 44px/1.4 "Heebo"; margin-bottom: 34px; color: var(--soft); list-style: none; }
+.dots li::before { content: ""; flex: 0 0 16px; height: 16px; border-radius: 50%; background: var(--sage); }
+</style></head><body>
+
+<!-- 1 · cover -->
+<section class="slide cover">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="t1">נעים מאוד,<br>אני תמר</div>
+  <div class="t2">אמא לשניים, ומעצבת חדרי ילדים</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 2 · story -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:250px">״כשהפכתי לאמא הבנתי משהו שלא לימדו אותי בשום קורס״</div>
+  <div class="body" style="top:640px">
+    <b>חדר ילדים הוא לא עוד חדר בבית.</b><br>
+    זה המקום שבו הם נרדמים אחרי סיפור, מתעוררים עם חיוך, בונים מגדלים וגדלים לנגד העיניים שלנו.<br><br>
+    <b>זה העולם הקטן הראשון שלהם.</b>
+  </div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 3 · my kids' room -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:230px">״את החדר הראשון עיצבתי לילדים שלי״</div>
+  <img class="photo" src="assets/stripes.jpg" style="right:80px; top:520px; width:470px; height:580px">
+  <img class="photo" src="assets/shelf.jpg" style="left:70px; top:640px; width:520px; height:400px; box-shadow:0 18px 40px rgba(0,0,0,.12)">
+  <div class="body" style="top:1110px; font-size:32px; text-align:center">החדר של הילדים שלי</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 4 · the problem -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:250px">״ראיתי כמה אמהות חולמות על החדר הזה, אבל נתקעות״</div>
+  <ul class="dots body" style="top:660px">
+    <li>אין זמן</li>
+    <li>אין תקציב למעצבת</li>
+    <li>ואין מושג מאיפה בכלל מתחילים</li>
+  </ul>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 5 · the offer -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:230px">״בשבילכן אני כאן״</div>
+  <div class="body" style="top:380px">בקרוב: <b>עיצוב חדרי ילדים אונליין</b>, מכל מקום בארץ</div>
+  <ol class="steps" style="top:560px">
+    <li><span class="n">1</span><span>שולחות לי תמונות ומידות של החדר</span></li>
+    <li><span class="n">2</span><span>מספרות לי על הילד או הילדה</span></li>
+    <li><span class="n">3</span><span>מקבלות תוכנית מסודרת: צבעים, רהיטים, אחסון ורשימת קניות</span></li>
+  </ol>
+  <div class="body" style="top:1040px; font-size:34px">ויוצרות את החדר <b>בעצמכן, בלי לקרוע את הכיס.</b></div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 6 · CTA -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:470px; text-align:center">״3 המשפחות הראשונות יקבלו מחיר השקה״</div>
+  <div class="body" style="top:760px; text-align:center">רוצה להיות אחת מהן?<br><b>כתבי לי ״חדר״ בהודעה פרטית</b></div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+</body></html>

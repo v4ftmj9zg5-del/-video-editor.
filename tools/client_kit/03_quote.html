@@ -1,0 +1,106 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>הצעת מחיר</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  .fill { display: inline-block; border-bottom: 1px solid var(--line); height: 6.5mm; vertical-align: -1.5mm; }
+  .pkgs { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin: 5mm 0 3mm; }
+  .pkg { border-radius: 3mm; padding: 6mm 6mm 5mm; display: flex; flex-direction: column; position: relative; }
+  .pkg.a { background: #fff; border: 1px solid var(--line); }
+  .pkg.b { background: var(--rose); }
+  .pkg .tag { position: absolute; top: -3mm; left: 6mm; background: var(--choc); color: var(--cream); font-size: 8pt;
+              padding: .8mm 3mm; border-radius: 3mm; letter-spacing: .05em; }
+  .pkg .name { font-family: "Frank Ruhl Libre"; font-weight: 600; font-size: 17pt; margin: 0; }
+  .pkg .for { font-size: 9pt; color: var(--muted); margin: .5mm 0 3mm; }
+  .pkg .num { font-family: "Frank Ruhl Libre"; font-weight: 600; font-size: 26pt; line-height: 1; margin: 0 0 1mm; }
+  .pkg .time { font-size: 9pt; color: var(--muted); margin-bottom: 3.5mm; }
+  .pkg ul.tick { font-size: 9.4pt; flex: 1; }
+  .pkg ul.tick li.plus { font-weight: 600; }
+  .pkg .checks { margin-top: 4mm; padding-top: 3mm; border-top: 1px solid #0001; font-weight: 500; }
+  ol.terms { padding-inline-start: 5mm; margin: 0; font-size: 9pt; }
+  ol.terms li { margin-bottom: 1.6mm; }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 8mm; }
+  .addons td { padding: 1.6mm 0; border-bottom: 1px solid var(--line); font-size: 9.6pt; }
+  .addons td:last-child { text-align: left; white-space: nowrap; font-weight: 500; }
+</style></head><body>
+
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow">הצעת מחיר · <span class="fill" data-name="תאריך" style="width:30mm"></span></div>
+  <h1>החדר של <span class="fill" data-name="שם הילד/ה" style="width:55mm;height:11mm"></span></h1>
+  <p class="lead">ל<span class="fill" data-name="שם הלקוחה" style="width:40mm"></span>, תודה על השיחה! יש שתי דרכים לעבוד יחד. בחרי את מה שמתאים לך.</p>
+
+  <div class="pkgs">
+    <div class="pkg a">
+      <p class="name">השראה ורשימה</p>
+      <p class="for">למי שרוצה כיוון ברור ורשימה מוכנה לקניות</p>
+      <p class="num">1,000 ₪</p>
+      <div class="time">מסירה תוך 7 ימי עבודה</div>
+      <ul class="tick">
+        <li>שיחת היכרות ושאלון אישי</li>
+        <li>לוח השראה: פלטת צבעים, חומרים ופריטים מרכזיים</li>
+        <li>רשימת קניות מלאה עם קישורים, מחירים ומידות</li>
+        <li>חלופה חסכונית לפריטים העיקריים</li>
+        <li>סבב תיקונים אחד</li>
+        <li>קובץ מסירה מסודר (PDF + אקסל)</li>
+      </ul>
+      <div class="checks"><span data-name="בחירה: השראה ורשימה">בחרתי בחבילה הזו</span></div>
+    </div>
+    <div class="pkg b">
+      <span class="tag">מומלצת</span>
+      <p class="name">חדר בקופסה</p>
+      <p class="for">למי שרוצה לראות את החדר לפני שקונים</p>
+      <p class="num">1,800 ₪</p>
+      <div class="time">מסירה תוך 10 ימי עבודה</div>
+      <ul class="tick">
+        <li>כל מה שבחבילת "השראה ורשימה"</li>
+        <li class="plus">הדמיה של החדר מ-2 זוויות, לפי המידות האמיתיות</li>
+        <li class="plus">תוכנית העמדה: איפה כל רהיט עומד ולמה</li>
+        <li>סבב תיקונים אחד על ההדמיה והרשימה</li>
+      </ul>
+      <div class="checks"><span data-name="בחירה: חדר בקופסה">בחרתי בחבילה הזו</span></div>
+    </div>
+  </div>
+
+  <p class="small">תשלום מראש · <span class="fill" data-name="אמצעי תשלום ומע״מ" style="width:95mm"></span></p>
+  <p class="small muted">העבודה מתחילה לאחר קבלת התשלום, השאלון, המידות והתמונות. ההצעה בתוקף ל-14 יום.</p>
+
+  <h2>תוספות אפשריות</h2>
+  <table class="addons" style="width:100%;border-collapse:collapse">
+    <tr><td>סבב תיקונים נוסף</td><td>250 ₪</td></tr>
+    <tr><td>זווית הדמיה נוספת (בחבילת חדר בקופסה)</td><td>300 ₪</td></tr>
+    <tr><td>שדרוג מ"השראה ורשימה" ל"חדר בקופסה" אחרי המסירה</td><td>900 ₪</td></tr>
+  </table>
+  <div class="folio"><span>הצעת מחיר</span><span>1 מתוך 2</span></div>
+</section>
+
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <h2 style="margin-top:4mm">איך זה עובד</h2>
+  <ol class="steps sage">
+    <li>בוחרים חבילה, מאשרים ומשלמים.</li>
+    <li>את שולחת שאלון, מידות ותמונות לפי מדריך המדידה.</li>
+    <li>תוך 3 ימי עבודה מקבלת לוח השראה לאישור.</li>
+    <li>אחרי האישור: רשימת קניות (ובחבילת חדר בקופסה גם הדמיה).</li>
+    <li>שולחת לי את כל ההערות בהודעה אחת, ואני מעדכנת.</li>
+    <li>מקבלת את קובץ המסירה הסופי, ויוצאים לקניות 🤍</li>
+  </ol>
+
+  <h2>תנאים</h2>
+  <ol class="terms">
+    <li>העבודה מבוססת על המידות והתמונות שהלקוחה שולחת. האחריות לדיוק המידות היא של הלקוחה, ומומלץ לבדוק מידות של כל פריט מול החדר לפני הזמנה.</li>
+    <li>ההדמיה היא המחשה. ייתכנו הבדלים בגוון, בחומר ובתאורה בין ההדמיה למוצרים במציאות.</li>
+    <li>מחירים, מלאי וזמני אספקה ברשימת הקניות נכונים ליום המסירה, ונקבעים על ידי החנויות.</li>
+    <li>ההזמנות מתבצעות ישירות מול החנויות, על ידי הלקוחה. אני לא מוכרת מוצרים ולא אחראית לאיכותם, לאספקה או להרכבה.</li>
+    <li>סבב תיקונים אחד כלול, כאשר כל ההערות נשלחות יחד. שינוי כיוון עיצובי אחרי אישור לוח ההשראה ייחשב כסבב נוסף.</li>
+    <li>זמן העבודה נספר מרגע קבלת כל החומרים. עיכוב בשליחתם דוחה את המסירה בהתאם.</li>
+    <li>העיצוב והקבצים מיועדים לשימוש אישי של המשפחה. אשמח לשתף את התוצאה בעמוד שלי, רק באישורך.</li>
+    <li>ביטול לפני תחילת העבודה: החזר מלא. לאחר שנשלח לוח ההשראה לא יינתן החזר.</li>
+  </ol>
+
+  <div class="sign">
+    <div><div class="line" data-name="שם וחתימת הלקוחה"></div><div class="small muted">שם הלקוחה וחתימה</div></div>
+    <div><div class="line" data-name="תאריך אישור"></div><div class="small muted">תאריך</div></div>
+  </div>
+  <p class="small muted" style="margin-top:8mm">תמר · Room Story Tell · @roomstorytell_ · <span class="fill" data-name="טלפון ומספר עוסק" style="width:70mm"></span></p>
+  <div class="folio"><span>הצעת מחיר</span><span>2 מתוך 2</span></div>
+</section>
+</body></html>

@@ -1,0 +1,128 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>מדריך מדידה וצילום</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  .plan { width: 100%; height: auto; display: block; margin: 2mm 0 4mm; }
+  .plan text { font-family: "Heebo"; font-size: 13px; fill: #4A3226; }
+  .plan .tag { font-weight: 700; font-size: 14px; }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 8mm; font-size: 9.5pt; }
+  .legend b { display: inline-grid; place-items: center; width: 6mm; height: 6mm; border-radius: 50%;
+              background: var(--rose); margin-inline-end: 2mm; font-size: 8.5pt; }
+  .legend > div { display: flex; align-items: center; }
+  .legend .m { flex: 0 0 20mm; margin-inline-start: auto; border-bottom: 1px solid var(--line); height: 6mm; position: relative; }
+  .legend .m::after { content: "ס״מ"; position: absolute; inset-inline-end: -6mm; bottom: .5mm; font-size: 8pt; color: var(--muted); }
+  .legend > div { padding-inline-end: 7mm; }
+  .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+  .shot { background: #fff; border: 1px solid var(--line); border-radius: 3mm; padding: 4mm; text-align: center; font-size: 9pt; }
+  .shot svg { width: 30mm; height: 22mm; display: block; margin: 0 auto 2mm; }
+</style></head><body>
+
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow">שלב 2 · מדידה</div>
+  <h1>איך למדוד את החדר</h1>
+  <div class="rule"></div>
+  <p class="lead">צריך רק מטר ו-15 דקות. מודדים בסנטימטרים, רושמים על הציור למטה (או על דף, באותה צורה), ומצלמים אותו אליי.</p>
+
+  <svg class="plan" style="direction:ltr" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="a" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#A0665F"/></marker></defs>
+    <!-- room -->
+    <rect x="120" y="60" width="400" height="270" fill="#FBF7F1" stroke="#4A3226" stroke-width="6"/>
+    <!-- window on top wall -->
+    <rect x="250" y="54" width="140" height="12" fill="#D7DFCC" stroke="#5F7356" stroke-width="2"/>
+    <text x="320" y="92" text-anchor="middle">חלון</text>
+    <!-- door bottom-left with swing -->
+    <rect x="150" y="324" width="80" height="12" fill="#FBF7F1"/>
+    <path d="M150,330 A80,80 0 0,1 230,250" fill="none" stroke="#8C7466" stroke-dasharray="4 4"/>
+    <line x1="150" y1="330" x2="150" y2="250" stroke="#8C7466" stroke-width="3"/>
+    <text x="196" y="300" text-anchor="middle">דלת</text>
+    <!-- AC on right wall -->
+    <rect x="514" y="110" width="12" height="70" fill="#E9D3CB" stroke="#A0665F" stroke-width="2"/>
+    <text x="500" y="150" text-anchor="end">מזגן</text>
+    <!-- outlets -->
+    <circle cx="400" cy="330" r="7" fill="#fff" stroke="#4A3226" stroke-width="2"/>
+    <circle cx="120" cy="150" r="7" fill="#fff" stroke="#4A3226" stroke-width="2"/>
+    <text x="400" y="315" text-anchor="middle" font-size="11">שקע</text>
+    <!-- A length (top) -->
+    <line x1="120" y1="25" x2="520" y2="25" stroke="#A0665F" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text class="tag" x="320" y="18" text-anchor="middle">A</text>
+    <!-- B width (left) -->
+    <line x1="80" y1="60" x2="80" y2="330" stroke="#A0665F" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text class="tag" x="66" y="200" text-anchor="middle">B</text>
+    <!-- C wall to window -->
+    <line x1="120" y1="42" x2="250" y2="42" stroke="#5F7356" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text class="tag" x="185" y="38" text-anchor="middle" fill="#5F7356">C</text>
+    <!-- D window width -->
+    <line x1="250" y1="42" x2="390" y2="42" stroke="#5F7356" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text class="tag" x="320" y="38" text-anchor="middle" fill="#5F7356">D</text>
+    <!-- E wall to door -->
+    <line x1="120" y1="362" x2="150" y2="362" stroke="#5F7356" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text class="tag" x="135" y="384" text-anchor="middle" fill="#5F7356">E</text>
+    <!-- F door width -->
+    <line x1="150" y1="362" x2="230" y2="362" stroke="#5F7356" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text class="tag" x="190" y="384" text-anchor="middle" fill="#5F7356">F</text>
+    <!-- compass note -->
+    <text x="600" y="380" text-anchor="end" fill="#8C7466" font-size="11">מבט מלמעלה</text>
+  </svg>
+
+  <div class="legend">
+    <div><b>A</b>אורך החדר, מקיר לקיר<span class="m"></span></div>
+    <div><b>B</b>רוחב החדר, מקיר לקיר<span class="m"></span></div>
+    <div><b>C</b>מהפינה עד תחילת החלון<span class="m"></span></div>
+    <div><b>D</b>רוחב החלון<span class="m"></span></div>
+    <div><b>E</b>מהפינה עד הדלת<span class="m"></span></div>
+    <div><b>F</b>רוחב הדלת + לאיזה צד נפתחת<span class="m"></span></div>
+    <div><b>G</b>גובה התקרה<span class="m"></span></div>
+    <div><b>H</b>גובה אדן החלון מהרצפה<span class="m"></span></div>
+  </div>
+
+  <h2>לסמן גם על הציור</h2>
+  <ul class="tick">
+    <li>שקעי חשמל, מתגים ונקודת תאורה בתקרה</li>
+    <li>מזגן, רדיאטור, ארון חשמל או כל דבר קבוע על הקיר</li>
+    <li>קורות, נישות, עמודים או קיר משופע</li>
+    <li>רהיטים שנשארים בחדר, עם רוחב × עומק × גובה</li>
+  </ul>
+  <div class="q" style="margin-top:3mm"><label>הערות ומידות נוספות<span class="hint">שקעים, מזגן, רהיטים שנשארים…</span></label><div class="box"></div></div>
+  <div class="folio"><span>מדריך מדידה וצילום</span><span>1 מתוך 2</span></div>
+</section>
+
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow sage">שלב 3 · צילום</div>
+  <h1>איך לצלם את החדר</h1>
+  <div class="rule"></div>
+  <p class="lead">התמונות עוזרות לי לראות אור, חומרים ופרופורציות שלא מופיעים במידות.</p>
+
+  <div class="shots">
+    <div class="shot"><svg viewBox="0 0 60 44"><rect x="4" y="4" width="52" height="36" fill="none" stroke="#4A3226" stroke-width="2"/><circle cx="30" cy="22" r="3" fill="#A0665F"/><path d="M30,22 L54,6 M30,22 L54,38" stroke="#A0665F" stroke-dasharray="2 2"/></svg>
+      <strong>קיר אחרי קיר</strong><br>עומדים במרכז החדר ומצלמים כל קיר במלואו, 4 תמונות</div>
+    <div class="shot"><svg viewBox="0 0 60 44"><rect x="4" y="4" width="52" height="36" fill="none" stroke="#4A3226" stroke-width="2"/><circle cx="50" cy="34" r="3" fill="#A0665F"/><path d="M50,34 L8,8" stroke="#A0665F" stroke-dasharray="2 2"/></svg>
+      <strong>מהפינות</strong><br>מכל פינה אל הפינה שמולה, כדי לראות את החדר כולו</div>
+    <div class="shot"><svg viewBox="0 0 60 44"><rect x="10" y="8" width="40" height="28" rx="3" fill="#D7DFCC"/><circle cx="30" cy="22" r="7" fill="none" stroke="#4A3226" stroke-width="2"/></svg>
+      <strong>פרטים</strong><br>החלון, הרצפה, הדלת ורהיטים שנשארים, מקרוב</div>
+  </div>
+
+  <h2>טיפים לתמונות טובות</h2>
+  <ul class="tick">
+    <li>לצלם ביום, עם וילונות פתוחים ואורות דלוקים</li>
+    <li>לצלם לרוחב (טלפון שוכב), בגובה החזה</li>
+    <li>לא לסדר לפני. אני צריכה לראות את החדר כמו שהוא</li>
+    <li>מומלץ גם סרטון קצר: סיבוב איטי אחד בחדר</li>
+  </ul>
+
+  <h2>מה שולחים אליי</h2>
+  <ul class="check">
+    <li>השאלון המלא</li>
+    <li>הציור עם כל המידות (A–H)</li>
+    <li>4 תמונות קירות + 4 תמונות מהפינות</li>
+    <li>תמונות של פרטים ורהיטים שנשארים</li>
+    <li>3–5 תמונות השראה</li>
+  </ul>
+
+  <div class="card rose" style="margin-top:7mm">
+    <strong>לא בטוחה במשהו?</strong> אפשר לקבוע שיחת וידאו של 15 דקות, ואני אעבור איתך על החדר בזמן אמת 🤍
+  </div>
+  <div class="folio"><span>מדריך מדידה וצילום</span><span>2 מתוך 2</span></div>
+</section>
+</body></html>

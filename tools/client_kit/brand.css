@@ -1,0 +1,71 @@
+/* Room Story Tell — client kit (A4, RTL). Palette: cream, antique pink, sage, chocolate. */
+@font-face { font-family: "Frank Ruhl Libre"; src: url("file:///root/.fonts/FrankRuhlLibre.ttf"); font-weight: 300 900; }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo.ttf"); font-weight: 100 900; }
+
+:root {
+  --cream: #F5EDE1; --paper: #FBF7F1; --rose: #E9D3CB; --rose-ink: #A0665F;
+  --sage: #D7DFCC; --sage-ink: #5F7356; --choc: #4A3226; --muted: #8C7466; --line: #E2D6C8;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { direction: rtl; font-family: "Heebo", sans-serif; font-weight: 350; color: var(--choc);
+       font-size: 10.5pt; line-height: 1.55; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.page { width: 210mm; height: 297mm; padding: 20mm 20mm 18mm; position: relative; overflow: hidden;
+        background: var(--paper); page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+.page.cream { background: var(--cream); }
+
+.brand { position: absolute; top: 11mm; left: 20mm; right: 20mm; display: flex; justify-content: space-between;
+         font-size: 7.5pt; letter-spacing: .28em; color: var(--muted); text-transform: uppercase; direction: ltr; }
+.folio { position: absolute; bottom: 10mm; left: 20mm; right: 20mm; display: flex; justify-content: space-between;
+         font-size: 7.5pt; color: var(--muted); }
+
+.eyebrow { font-size: 9pt; letter-spacing: .12em; color: var(--rose-ink); font-weight: 500; margin: 0 0 3mm; }
+.eyebrow.sage { color: var(--sage-ink); }
+h1 { font-family: "Frank Ruhl Libre", serif; font-weight: 600; font-size: 30pt; line-height: 1.15; margin: 0 0 4mm; }
+h2 { font-family: "Frank Ruhl Libre", serif; font-weight: 600; font-size: 15pt; margin: 8mm 0 2.5mm; }
+h3 { font-size: 10.5pt; font-weight: 600; margin: 4mm 0 1.5mm; }
+p { margin: 0 0 2.5mm; }
+.lead { font-size: 11.5pt; color: #5d4537; max-width: 150mm; }
+.rule { width: 18mm; height: 1.4px; background: var(--rose-ink); margin: 4mm 0 6mm; }
+.muted { color: var(--muted); }
+.small { font-size: 8.5pt; }
+
+/* form fields */
+.q { margin: 0 0 4.2mm; break-inside: avoid; }
+.q label { display: block; font-weight: 500; margin-bottom: 1.2mm; }
+.q .hint { font-size: 8.5pt; color: var(--muted); font-weight: 350; margin-inline-start: 2mm; }
+.line { border-bottom: 1px solid var(--line); height: 7mm; }
+.box { border: 1px solid var(--line); border-radius: 2mm; height: 18mm; background: #fff8; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 6mm; }
+.checks { display: flex; flex-wrap: wrap; gap: 2mm 6mm; }
+.checks span::before { content: ""; display: inline-block; width: 3.2mm; height: 3.2mm; border: 1px solid var(--muted);
+                       border-radius: .8mm; margin-inline-end: 1.6mm; vertical-align: -0.4mm; }
+
+/* cards & lists */
+.card { background: #fff; border: 1px solid var(--line); border-radius: 3mm; padding: 5mm 6mm; break-inside: avoid; }
+.card.rose { background: var(--rose); border-color: transparent; }
+.card.sage { background: var(--sage); border-color: transparent; }
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps li { counter-increment: s; position: relative; padding: 0 11mm 3.5mm 0; break-inside: avoid; }
+.steps li::before { content: counter(s); position: absolute; right: 0; top: -.4mm; width: 7mm; height: 7mm; border-radius: 50%;
+                    background: var(--rose); color: var(--choc); font-family: "Frank Ruhl Libre", serif; font-weight: 600;
+                    display: grid; place-items: center; font-size: 10pt; }
+.steps.sage li::before { background: var(--sage); }
+ul.tick { list-style: none; padding: 0; margin: 0; }
+ul.tick li { padding-inline-start: 6mm; position: relative; margin-bottom: 1.6mm; }
+ul.tick li::before { content: "✓"; position: absolute; inset-inline-start: 0; color: var(--sage-ink); font-weight: 700; }
+ul.check { list-style: none; padding: 0; margin: 0; }
+ul.check li { padding-inline-start: 7mm; position: relative; margin-bottom: 1.8mm; break-inside: avoid; }
+ul.check li::before { content: ""; position: absolute; inset-inline-start: 0; top: 1mm; width: 3.4mm; height: 3.4mm;
+                      border: 1px solid var(--muted); border-radius: .8mm; }
+.ph { background: #F3E3B8; padding: 0 1mm; border-radius: .6mm; }   /* {{placeholder}} to fill in */
+
+table.items { width: 100%; border-collapse: collapse; font-size: 9pt; }
+table.items th { text-align: right; font-weight: 500; color: var(--muted); border-bottom: 1.2px solid var(--choc); padding: 2mm 1.5mm; }
+table.items td { border-bottom: 1px solid var(--line); padding: 2.2mm 1.5mm; vertical-align: top; }
+table.items tr.total td { border-bottom: none; font-weight: 600; font-size: 10.5pt; padding-top: 3.5mm; }
+.swatch { display: inline-block; width: 12mm; height: 12mm; border-radius: 50%; margin-inline-end: 2mm; border: 1px solid #0001; }
