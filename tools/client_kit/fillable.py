@@ -23,15 +23,16 @@ JS = r"""
 () => {
   const out = [];
   const lab = el => {
+    if (el.dataset.name) return el.dataset.name;
     const q = el.closest('.q, .legend > div, .sign > div');
     let t = '';
     if (q) { const l = q.querySelector('label, b, .small'); t = (l ? l.childNodes[0].textContent : q.textContent); }
     return (t || '').trim().replace(/\s+/g, ' ').slice(0, 60);
   };
   const r = el => { const b = el.getBoundingClientRect(); return [b.left, b.top + scrollY, b.right, b.bottom + scrollY]; };
-  document.querySelectorAll('.line, .m').forEach(el => out.push({kind: 'text', label: lab(el), rect: r(el)}));
+  document.querySelectorAll('.line, .m, .fill').forEach(el => out.push({kind: 'text', label: lab(el), rect: r(el)}));
   document.querySelectorAll('.box').forEach(el => out.push({kind: 'multi', label: lab(el), rect: r(el)}));
-  document.querySelectorAll('.checks span').forEach(el => out.push({kind: 'check', label: lab(el) + ' / ' + el.textContent.trim(), rect: r(el)}));
+  document.querySelectorAll('.checks span').forEach(el => out.push({kind: 'check', label: el.dataset.name || (lab(el) + ' / ' + el.textContent.trim()), rect: r(el)}));
   document.querySelectorAll('ul.check li').forEach(el => out.push({kind: 'checkli', label: el.textContent.trim().slice(0, 60), rect: r(el)}));
   return out;
 }
