@@ -145,6 +145,7 @@ class Reel:
         self.t_handle = Image.new("RGBA", (W, 60), (0, 0, 0, 0))
         ImageDraw.Draw(self.t_handle).text((SAFE_R, 8), "@roomstorytell_", font=self.f_handle, fill=(255, 255, 255, 230), anchor="ra")
 
+        self.cta_times = (.15, .45, .8)   # question, "כתבו לי חדר", handle (overridable to sync with VO)
         # cards prepared once
         self.c_m = card(self.m, 520, 736)
         self.c_q = card(self.q, 520, 736)
@@ -218,7 +219,7 @@ class Reel:
     def cta(self, t, d):
         img = cover(self.portrait, W, H, zoom=1.0 + .05 * ease_io(t / d), fx=.5, fy=.42).convert("RGBA")
         img.alpha_composite(self.g_bottom)
-        k1, k2, k3 = (ease_out((t - s) / .5) for s in (.15, .45, .8))
+        k1, k2, k3 = (ease_out((t - s) / .5) for s in self.cta_times)
         paste_fade(img, self.t_cta1, (0, 1060 + 25 * (1 - k1)), k1)
         paste_fade(img, self.t_cta2, (0, 1140 + 30 * (1 - k2)), k2)
         paste_fade(img, self.t_handle, (0, 1390), k3)
@@ -229,9 +230,13 @@ class Reel:
                 (self.step4, 4.0), (self.room, 3.2), (self.cta, 3.5)]
 
 
-def render(A, out):
+def render(A, out, durations=None, cta_times=None):
     r = Reel(A)
+    if cta_times:
+        r.cta_times = tuple(cta_times)
     tl = r.timeline()
+    if durations:
+        tl = [(fn, d) for (fn, _), d in zip(tl, durations)]
     starts, s = [], 0.0
     for _, d in tl:
         starts.append(s)
@@ -260,4 +265,6 @@ def render(A, out):
 
 
 if __name__ == "__main__":
-    render(sys.argv[1], sys.argv[2])
+    # optional 3rd arg: JSON {"durations": [...], "cta_times": [...]} to sync with a soundtrack
+    opts = __import__("json").load(open(sys.argv[3])) if len(sys.argv) > 3 else {}
+    render(sys.argv[1], sys.argv[2], opts.get("durations"), opts.get("cta_times"))
