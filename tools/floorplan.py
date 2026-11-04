@@ -40,6 +40,13 @@ OPTIONS = {
         ("chair", 235, 0, 75, 80, "#D9C9BA", None, "כורסת הנקה"),
         ("books", 0, 0, 80, 62, "#F3E3B8", None, "פינת ספרים"),
     ],
+    "ג · כורסה ליד השקע, עריסה לידה": [
+        ("crib", 244, 30, 66, 124, "#E9D3CB", "l", "עריסה 66×124"),
+        ("wardrobe", 0, 0, 58, 100, "#D7DFCC", "r", "ארון 100×58"),
+        ("dresser", 115, 230, 108, 50, "#EFE6DA", "t", "שידה 108×50"),
+        ("chair", 230, 200, 75, 80, "#D9C9BA", "t", "כורסת הנקה"),
+        ("books", 125, 0, 90, 30, "#F3E3B8", None, "פינת ספרים"),
+    ],
 }
 
 
@@ -48,7 +55,9 @@ def overlap(a, b):
 
 
 def front_zone(it):
-    _, x, y, w, h, _, f, _ = it
+    kind, x, y, w, h, _, f, _ = it
+    if kind == "chair":          # 'front' only orients the chair drawing; legroom is checked by eye
+        return None
     return {"t": (x, y - CLEAR, w, CLEAR), "b": (x, y + h, w, CLEAR),
             "l": (x - CLEAR, y, CLEAR, h), "r": (x + w, y, CLEAR, h)}.get(f)
 

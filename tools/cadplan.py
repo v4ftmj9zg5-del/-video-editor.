@@ -22,7 +22,8 @@ PROJECT = "חדר תינוקת · משפחת לוי"
 DATE = "02.11.2026"
 DRAWN = "Room Story Tell · תמר"
 NOTES = ["כל המידות בס״מ, נטו מקיר לקיר", "יש לאמת מידות באתר לפני הזמנה",
-         "מיקום השקעים לבירור מול הלקוחה", "מידות הארון: לפי הדגם שייבחר"]
+         "מיקום השקעים לבירור מול הלקוחה", "מידות הארון: לפי הדגם שייבחר",
+         "אפשרות ג: מדף קיר קטן ליד הכורסה במקום שולחן צד"]
 
 # lineweights in real-cm units (paper mm / MM)
 LW_WALL, LW_MED, LW_THIN, LW_HAIR = 0.5 / MM, 0.3 / MM, 0.18 / MM, 0.12 / MM
@@ -65,11 +66,20 @@ def furniture_shapes(item):
         elif f == "l":
             s.append(("line", x + 4, y, x + 4, y + h, LW_THIN))
         s.append(("rect", x + w / 2 - 22, y + h / 2 - 15, 44, 30, LW_HAIR))  # changing pad
+    elif kind == "chair" and item[6] == "t":   # back against the wall below, seat facing up the room
+        s = [("rect", x + 4, y + h - 18, w - 8, 16, LW_MED),
+             ("rect", x + 2, y + 4, 12, h - 6, LW_MED), ("rect", x + w - 14, y + 4, 12, h - 6, LW_MED),
+             ("rect", x + 14, y + 8, w - 28, h - 26, LW_THIN),
+             ("rect", x + w + 1, y + 6, 4, 30, LW_MED)]            # small wall shelf by the socket (phone, water)
     elif kind == "chair":
         s = [("rect", x + 4, y + 2, w - 8, 16, LW_MED),                   # back (window side)
              ("rect", x + 2, y + 2, 12, h - 6, LW_MED), ("rect", x + w - 14, y + 2, 12, h - 6, LW_MED),  # arms
              ("rect", x + 14, y + 18, w - 28, h - 26, LW_THIN)]           # seat
         s.append(("circle", x - 22, y + h - 10, 18, LW_THIN))             # side table
+    elif kind == "books" and w > h:      # low nook under a window: ledges along the wall
+        s = [("rect", x + 4, y + 2, w - 8, 6, LW_MED),
+             ("circle", x + w * .4, y + h * .62, min(h * .38, 20), LW_THIN),
+             ("rect", x + w - 30, y + h - 24, 24, 20, LW_THIN)]
     elif kind == "books":
         s = [("rect", x + 4, y, 6, h - 6, LW_MED),                        # wall ledges (left wall)
              ("rect", x + 4, y + 6, w - 10, 6, LW_MED) if False else ("line", x, y, x, y, 0),
@@ -179,7 +189,7 @@ def svg_sheet(idx, name, items):
     area = W * H / 10000
     el.append(f'<text x="{W / 2 + 10}" y="{H / 2 - 30}" class="room">חדר תינוקת</text>'
               f'<text x="{W / 2 + 10}" y="{H / 2 - 18}" class="area">שטח: {area:.2f} מ״ר · גובה תקרה: 260</text>')
-    el.append(f'<text x="{(wx0 + wx1) / 2}" y="{T * 0.6 + 9}" class="note">ארגז תריס, 25 ס״מ מהתקרה</text>')
+    el.append(f'<text x="{(wx0 + wx1) / 2}" y="52" class="note">ארגז תריס, 25 ס״מ מהתקרה</text>')
     el.append(f'<text x="{dx0 + r / 2}" y="{H - 26}" class="note">מזגן (עילי)</text>')
     for ox, oy in ROOM["outlets"]:
         el.append(f'<text x="{ox}" y="{oy - 14}" class="note">שקעים ?</text>')
@@ -194,7 +204,8 @@ def svg_sheet(idx, name, items):
     for it in items:
         w, h = it[3], it[4]
         a, b = (max(w, h), min(w, h))
-        items_rows.append(f"<tr><td class='n'>{tags[it[0]]}</td><td>{names[it[0]]}</td><td class='m'>⁦{a}×{b}⁩</td></tr>")
+        label = "כורסת הנקה קיימת + מדף קיר" if it[0] == "chair" and it[6] == "t" else names[it[0]]
+        items_rows.append(f"<tr><td class='n'>{tags[it[0]]}</td><td>{label}</td><td class='m'>⁦{a}×{b}⁩</td></tr>")
     checks = "".join(f"<li>{iso(n)}</li>" for n in check(items))
     notes = "".join(f"<li>{n}</li>" for n in NOTES)
 
