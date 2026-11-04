@@ -76,7 +76,7 @@ def build(path, rows=30):
             c = ws.cell(r, col)
             c.font = font(size=10)
             c.border = Border(bottom=thin)
-            c.alignment = Alignment(vertical="center", wrap_text=col in (3, 10, 13))
+            c.alignment = Alignment(vertical="center", wrap_text=col in (3, 6, 10, 13), readingOrder=2)  # RTL text
             if col in (8, 9, 11, 12):
                 c.number_format = money
         if r % 2 == 0:
