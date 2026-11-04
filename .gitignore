@@ -4,3 +4,4 @@ __pycache__/
 *.mov
 tools/client_kit/sample/
 tools/carousel/assets/
+tools/moodboard/assets/
