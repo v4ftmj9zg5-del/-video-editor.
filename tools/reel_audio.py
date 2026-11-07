@@ -6,7 +6,7 @@ reverb, ducked under the voice. SFX: whoosh on every cut, tick on step numbers,
 paper slides, a sparkle on the call to action.
 
 Usage: reel_audio.py PLAN.json OUT.wav
-PLAN = {"bpm": 90, "scenes": [beats...], "vo": [{"file": path, "scene": i, "offset": s}],
+PLAN = {"bpm": 90, "scenes": [beats...], "vo": [{"file": path, "scene": i, "offset": s}], "whooshes": [i, ...],
         "papers": [[scene, offset], ...], "ticks": [scene, ...], "sparkle": [scene, offset]}
 """
 import json
@@ -176,7 +176,7 @@ def main(plan_path, out):
     mus = np.pad(mus, (0, max(0, n - len(mus))))
 
     vo = np.zeros(n)
-    for v in P["vo"]:
+    for v in P.get("vo", []):
         a = read_wav(v["file"])
         a = a / (np.abs(a).max() + 1e-9) * .7
         j = int((starts[v["scene"]] + v["offset"]) * SR)
@@ -188,8 +188,8 @@ def main(plan_path, out):
         j = max(0, int(t * SR))
         sfx[j:j + len(sig)] += sig[: max(0, n - j)]
 
-    for s in starts[1:]:
-        put(whoosh(.55, .32), s - .36)
+    for i in P.get("whooshes", range(1, len(starts))):    # default: a whoosh on every cut
+        put(whoosh(.55, .32), starts[i] - .36)
     for i in P.get("ticks", []):
         put(tick(.28), starts[i] + .06)
     for i, off in P.get("papers", []):
