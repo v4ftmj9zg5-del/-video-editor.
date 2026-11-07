@@ -285,10 +285,8 @@ class Build:
         img = img * (1 - .55 * grad)
         l1, _ = self.label("חדר ריק. ארגזים. עגלה.", self.fonts["hook"], (255, 255, 255), pill=False)
         l2, _ = self.label("בואי נראה מה אפשר לעשות ממנו", self.fonts["hook2"], (255, 255, 255), pill=False)
-        l3, _ = self.label("חדר לדוגמה", self.fonts["small"], (255, 255, 255), pill=False)
         self.put(img, l1, 300 - 130, ease_out(t / .35), dy=18 * (1 - ease_out(t / .5)))
         self.put(img, l2, 395 - 130, ease_out((t - .45) / .4))
-        self.put(img, l3, 470 - 130, .85 * ease_out((t - .7) / .4))
         return img
 
     def built(self, name, t, d):
@@ -310,7 +308,7 @@ class Build:
         frame = self.camera(img, 600 + (900 - 600) * mv, 1.05 - .05 * mv)
         c1, _ = self.label("רוצה חדר כזה?", self.fonts["cta"], INK)
         c2, _ = self.label("כתבי לי ״חדר״ בהודעה", self.fonts["cta2"], INK)
-        c3, _ = self.label("חדר לדוגמה · הדמיה · \u2066@roomstorytell_\u2069", self.fonts["small"], INK)
+        c3, _ = self.label("\u2066@roomstorytell_\u2069", self.fonts["small"], INK)
         a = ease_out((t - 1.9) / .5)
         self.put(frame, c1, 1240 - 130, a, dy=26 * (1 - a))
         self.put(frame, c2, 1390 - 130, ease_out((t - 2.3) / .5))
