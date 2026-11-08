@@ -92,6 +92,24 @@ def tick(level=.35):
     return level * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 55)
 
 
+def thud(level=.5):
+    """Soft landing: low sine knock + a little felt noise."""
+    n = int(.35 * SR)
+    t = np.arange(n) / SR
+    f = 95 - 40 * t / .35
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 16)
+    felt = noise_burst(.35, lp=.05, level=.35) * np.exp(-t * 30)
+    return level * (body + felt) * np.minimum(1, t / .003)
+
+
+def pop(level=.22):
+    """Gentle pop for small decor."""
+    n = int(.12 * SR)
+    t = np.arange(n) / SR
+    f = 620 + 900 * np.exp(-t * 40)
+    return level * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 38)
+
+
 def sparkle(level=.25):
     out = np.zeros(int(1.6 * SR))
     for k, m in enumerate((86, 90, 93, 98)):          # D6 F#6 A6 D7
@@ -194,6 +212,10 @@ def main(plan_path, out):
         put(tick(.28), starts[i] + .06)
     for i, off in P.get("papers", []):
         put(noise_burst(.22, lp=.25, level=.11) * np.linspace(1, 0, int(.22 * SR)) ** 2, starts[i] + off)
+    for i, off in P.get("thuds", []):
+        put(thud(.5), starts[i] + off)
+    for i, off in P.get("pops", []):
+        put(pop(.2), starts[i] + off)
     if "sparkle" in P:
         i, off = P["sparkle"]
         put(sparkle(.2), starts[i] + off)
