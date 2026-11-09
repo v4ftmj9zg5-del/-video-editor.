@@ -56,7 +56,7 @@ def add_fields(pdf_path, fields):
         y1 -= pno * PAGE_H
         if pno >= len(doc):
             continue
-        name = f["label"] or f["kind"]
+        name = (f["label"] or f["kind"]).replace(".", "").strip()   # "." would split the field hierarchy
         used[name] = used.get(name, 0) + 1
         if used[name] > 1:
             name = f"{name} ({used[name]})"
