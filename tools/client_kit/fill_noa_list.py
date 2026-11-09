@@ -15,6 +15,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from shopping_list import build  # noqa: E402
 
+ROWS = 32
 TODO = PatternFill("solid", start_color="F3E3B8", end_color="F3E3B8")
 EXIST = PatternFill("solid", start_color="E3E7DA", end_color="E3E7DA")
 
@@ -55,6 +56,8 @@ ITEMS = [
     ("אקססוריז", "סטיילינג (לא חובה): מנורת לילה בצורת בית מעץ", "", "", 1, False, "",
      "על המדף. עדיף על סוללה, בלי כבל שמשתלשל"),
     ("אקססוריז", "סטיילינג (לא חובה): ארנבת סרוגה למדף", "", "", 1, False, "", "על המדף בלבד, לא בתוך העריסה"),
+    ("אקססוריז", "אקססוריז וסטיילינג (סכום כולל)", "", "", 1, False, "",
+     "כולל: ארנבת לאח הגדול, צמח מלאכותי, מנורת בית, ארנבת סרוגה ופריטים קטנים"),
     ("אחר", "ערכת עיגון לשידה ולארון", "", "", 2, False, "", "חובה בחדר ילדים"),
     ("אחר", "כיסויי בטיחות לשקעים", "", "", 1, False, "", ""),
 ]
@@ -88,6 +91,16 @@ PRICES = {
                          note="LEN סדין צמוד. לבדוק אם המחיר ליחידה או לזוג"),
     "מנורת שולחן פנס מעץ עם כדור חלבי": dict(store="שילב", price=150, link="https://share.google/YxTWxatwTqdPGncSe"),
     "מובייל לעריסה: פילים, עננים וכוכבים": dict(store="אינפיניטי", price=120, link="https://share.google/w0IfZcqRm1WnJDVQ6"),
+    "טפט ארנבים בצבעי מים": dict(price=1000),
+    "פס קרניז לבן לחלוקת הקיר": dict(price=300),
+    "משטח החתלה + 2 כיסויים": dict(store="שילב", price=300,
+                                  link="https://www.shilav.co.il/products/%d7%9e%d7%96%d7%a8%d7%9f-%d7%94%d7%97%d7%aa%d7%9c%d7%94-%d7%a2%d7%9d-%d7%a0%d7%97%d7%a9%d7%95%d7%a9-mix-it-%d7%a7%d7%a8%d7%9d",
+                                  note="מזרן החתלה Mix it, קרם. לבדוק אם כולל כיסויים להחלפה"),
+    "אקססוריז וסטיילינג (סכום כולל)": dict(price=400),
+    "ארנבת בד": dict(price=0, note="כלול בסעיף האקססוריז"),
+    "סטיילינג (לא חובה): צמח תלוי על המדף": dict(price=0, note="כלול בסעיף האקססוריז"),
+    "סטיילינג (לא חובה): מנורת לילה בצורת בית מעץ": dict(price=0, note="כלול בסעיף האקססוריז"),
+    "סטיילינג (לא חובה): ארנבת סרוגה למדף": dict(price=0, note="כלול בסעיף האקססוריז"),
     "סלסלות קלועות לשידה, לארון ולמדפים": dict(store="H&M", price=150, qty=1,
                                              link="https://www2.hm.com/hw_il/productpage.1211338001.html",
                                              note="לבדוק כמה סלסלות במחיר"),
@@ -142,7 +155,7 @@ def photo_sheet(wb, img_dir):
 
 
 def main(out, img_dir=None):
-    build(out, rows=30)
+    build(out, rows=ROWS)
     wb = load_workbook(out)
     ws = wb.active
     ws["A1"] = "רשימת קניות · החדר של התינוקת · משפחת לוי"
@@ -179,17 +192,17 @@ def main(out, img_dir=None):
                 ws.cell(r, c).fill = EXIST
         else:
             todo = [] if pr else [5, 8]   # link + price still to source
-            if pr and not pr.get("link"):
+            if pr and not pr.get("link") and pr["price"]:
                 todo = [5]
             for c in todo:
                 ws.cell(r, c).fill = TODO
             if alt and not (pr and pr.get("alt_price")):
                 ws.cell(r, 11).fill = TODO
     ws.column_dimensions["F"].width = 24
-    for r in range(first, first + 30):
+    for r in range(first, first + ROWS):
         ws.cell(r, 6).alignment = Alignment(wrap_text=True, vertical="center", readingOrder=2)
         ws.cell(r, 7).alignment = Alignment(horizontal="center", vertical="center")
-    legend = first + 30 + 3
+    legend = first + ROWS + 3
     ws.cell(legend, 3, "מקרא").font = Font(name="Heebo", bold=True)
     ws.cell(legend + 1, 3, "צהוב: לבדוק מחיר וקישור באתר החנות").fill = TODO
     ws.cell(legend + 2, 3, "ירוק: פריט קיים, לא נכנס לחישוב").fill = EXIST
