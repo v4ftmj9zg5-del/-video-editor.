@@ -59,6 +59,40 @@ ITEMS = [
     ("אחר", "כיסויי בטיחות לשקעים", "", "", 1, False, "", ""),
 ]
 
+# prices the designer has sourced: item -> fields to fill (store, price, link, qty, alt, alt_price, note)
+PRICES = {
+    "גוף ארון PAX לבן": dict(store="איקאה", price=545,
+                             link="https://www.ikea.com/il/he/p/pax-wardrobe-frame-white-80458207/"),
+    "זוג דלתות פאנל לבנות לארון": dict(store="איקאה", price=590, link="https://www.ikea.com/il/he/cat/pax-doors-with-hinges-19112/",
+                                      note="2 דלתות FORSAND עם צירים, ‏295 כל אחת. דלתות פאנל כמו בהדמיה: BERGSBO, לבדוק מחיר ומלאי"),
+    "פנים ארון: 2 מוטות, מדפים ו-2 מגירות": dict(store="איקאה", price=540, link="https://www.ikea.com/il/he/cat/pax-interior-organisers-19113/",
+                                                note="2 מוטות (30), 2 מדפים (75), 2 מגירות (165)"),
+    "שטיח עגול קלוע מסיבים טבעיים": dict(store="איקאה", price=395,
+                                        link="https://www.ikea.com/il/he/p/fullmakt-rug-flatwoven-in-outdoor-beige-melange-30573120/",
+                                        alt="LOHALS, יוטה טבעית (איקאה)", alt_price=295,
+                                        note="FULLMAKT מתאים גם לחוץ, ולכן קל יותר לניקוי. לבדוק באתר את הוראות הניקוי. LOHALS נראה כמו ההדמיה אבל לא נכבס"),
+    "מנורת תקרה ענן לבנה עם בסיס ורוד": dict(store="AliExpress", price=370, link="https://a.aliexpress.com/_c4rFUDsT",
+                                           note="לבדוק תקן ישראלי וחיבור לחשמל, וזמן משלוח"),
+    "2 מדפים צפים מעץ טבעי": dict(store="SHEIN", price=109, qty=1, link="https://onelink.shein.com/60/67pskf1d59h4?shc=2_RdvtYvTml44",
+                                  note="סט מדפים. לבדוק אורך, ושיש ברגים לקיר"),
+    "מראה אובלית עם מסגרת עץ": dict(store="אורבניקה", price=240, link="https://www.urbanica-wh.com/onl000007-013-1111"),
+    "וילון פשתן חצי שקוף בשמנת": dict(store="איקאה", price=395,
+                                     link="https://www.ikea.com/il/he/p/dytag-curtains-1-pair-white-with-heading-tape-20466719/",
+                                     note="DYTÄG, זוג וילונות"),
+    "מוט וילון דק בגוון כהה": dict(store="איקאה", price=79, note="מוט וחיבורים"),
+    "כרית ושמיכה לכורסה בוורוד מעושן": dict(store="איקאה", price=50,
+                                          link="https://www.ikea.com/il/he/p/krypljung-cushion-cover-natural-90565443/",
+                                          note="KRYPLJUNG, ציפית בלבד: צריך גם מילוי"),
+    "מצעים לעריסה": dict(store="איקאה", price=95,
+                         link="https://www.ikea.com/il/he/p/len-fitted-sheet-for-cot-white-beige-muslin-00625125/",
+                         note="LEN סדין צמוד. לבדוק אם המחיר ליחידה או לזוג"),
+    "מנורת שולחן פנס מעץ עם כדור חלבי": dict(store="שילב", price=150, link="https://share.google/YxTWxatwTqdPGncSe"),
+    "מובייל לעריסה: פילים, עננים וכוכבים": dict(store="אינפיניטי", price=120, link="https://share.google/w0IfZcqRm1WnJDVQ6"),
+    "סלסלות קלועות לשידה, לארון ולמדפים": dict(store="H&M", price=150, qty=1,
+                                             link="https://www2.hm.com/hw_il/productpage.1211338001.html",
+                                             note="לבדוק כמה סלסלות במחיר"),
+}
+
 # item name -> photo file in IMG_DIR (inspiration photos the designer picked)
 PHOTOS = {
     "טפט ארנבים בצבעי מים": "wallpaper.png",
@@ -124,14 +158,32 @@ def main(out, img_dir=None):
         ws.cell(r, 7, qty)
         ws.cell(r, 10, alt or None)
         ws.cell(r, 13, note or None)
+        pr = PRICES.get(item)
+        if pr:
+            ws.cell(r, 4, pr.get("store", store) or None)
+            ws.cell(r, 8, pr["price"])
+            if "qty" in pr:
+                ws.cell(r, 7, pr["qty"])
+            if pr.get("link"):
+                c = ws.cell(r, 5, pr["link"])
+                c.hyperlink = pr["link"]
+                c.font = Font(name="Heebo", size=9, color="5F7053", underline="single")
+            if pr.get("alt"):
+                ws.cell(r, 10, pr["alt"])
+                ws.cell(r, 11, pr["alt_price"])
+            if pr.get("note"):
+                ws.cell(r, 13, pr["note"] + (" · " + note if note else ""))
         if existing:
             ws.cell(r, 8, 0)
             for c in range(1, 14):
                 ws.cell(r, c).fill = EXIST
         else:
-            for c in (5, 8):            # link + price to source
+            todo = [] if pr else [5, 8]   # link + price still to source
+            if pr and not pr.get("link"):
+                todo = [5]
+            for c in todo:
                 ws.cell(r, c).fill = TODO
-            if alt:
+            if alt and not (pr and pr.get("alt_price")):
                 ws.cell(r, 11).fill = TODO
     ws.column_dimensions["F"].width = 24
     for r in range(first, first + 30):
