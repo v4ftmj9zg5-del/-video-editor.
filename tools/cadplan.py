@@ -71,6 +71,12 @@ def furniture_shapes(item):
              ("rect", x + 2, y + 4, 12, h - 6, LW_MED), ("rect", x + w - 14, y + 4, 12, h - 6, LW_MED),
              ("rect", x + 14, y + 8, w - 28, h - 26, LW_THIN),
              ("rect", x + w + 1, y + 6, 4, 30, LW_MED)]            # small wall shelf by the socket (phone, water)
+    elif kind == "chair" and item[6] == "l":   # back against the right wall, seat facing into the room
+        s = [("rect", x + w - 18, y + 4, 16, h - 8, LW_MED),
+             ("rect", x + 4, y + 2, w - 6, 12, LW_MED), ("rect", x + 4, y + h - 14, w - 6, 12, LW_MED),
+             ("rect", x + 8, y + 14, w - 26, h - 28, LW_THIN)]
+    elif kind == "shelves":              # two floating shelves on the wall (above the rail)
+        s = [("rect", x, y, w, h, LW_THIN), ("line", x + w / 2, y + 4, x + w / 2, y + h - 4, LW_HAIR)]
     elif kind == "chair":
         s = [("rect", x + 4, y + 2, w - 8, 16, LW_MED),                   # back (window side)
              ("rect", x + 2, y + 2, 12, h - 6, LW_MED), ("rect", x + w - 14, y + 2, 12, h - 6, LW_MED),  # arms
@@ -89,6 +95,8 @@ def furniture_shapes(item):
 
 
 def rug(option_idx):
+    if option_idx == 4:
+        return ("circle", 162, 135, 72, LW_HAIR)
     return ("circle", 160, 150, 70, LW_HAIR) if option_idx == 1 else ("circle", 150, 140, 55, LW_HAIR)
 
 
@@ -143,7 +151,7 @@ def svg_sheet(idx, name, items):
             dash = ' stroke-dasharray="8 4"' if g[3] == LW_HAIR else ""
             el.append(f'<circle cx="{g[0]}" cy="{g[1]}" r="{g[2]}" fill="{"none" if dash else "#fff"}" stroke="#000" {sw(g[3])}{dash}/>')
     # labels (tags in circles + text)
-    tags = {"crib": "1", "wardrobe": "2", "dresser": "3", "chair": "4", "books": "5"}
+    tags = {"crib": "1", "wardrobe": "2", "dresser": "3", "chair": "4", "books": "5", "shelves": "5"}
     for it in items:
         x, y, w, h = it[1:5]
         cx, cy = x + w / 2, y + h / 2
@@ -200,11 +208,13 @@ def svg_sheet(idx, name, items):
     ][:0])
     items_rows = []
     names = {"crib": "עריסה קיימת, מזרן 60×120", "wardrobe": "ארון בגדים (חדש)", "dresser": "שידה קיימת HEMNES",
-             "chair": "כורסת הנקה קיימת + שולחן צד", "books": "פינת ספרים: מדפי תמונות, כרית, סלסלה"}
+             "chair": "כורסת הנקה קיימת + שולחן צד", "books": "פינת ספרים: מדפי תמונות, כרית, סלסלה",
+             "shelves": "2 מדפים צפים מעץ, מעל הקרניז"}
     for it in items:
         w, h = it[3], it[4]
         a, b = (max(w, h), min(w, h))
-        label = "כורסת הנקה קיימת + מדף קיר" if it[0] == "chair" and it[6] == "t" else names[it[0]]
+        label = {"t": "כורסת הנקה קיימת + מדף קיר", "l": "כורסת הנקה קיימת"}.get(it[6], names[it[0]]) \
+            if it[0] == "chair" else names[it[0]]
         items_rows.append(f"<tr><td class='n'>{tags[it[0]]}</td><td>{label}</td><td class='m'>⁦{a}×{b}⁩</td></tr>")
     checks = "".join(f"<li>{iso(n)}</li>" for n in check(items))
     notes = "".join(f"<li>{n}</li>" for n in NOTES)
@@ -292,7 +302,7 @@ def write_dxf(path, idx, name, items):
         elif kind == "circle":
             msp.add_circle(f(g[0], g[1]), g[2], dxfattribs={"layer": "FURNITURE"})
     names = {"crib": "CRIB 66x124", "wardrobe": "WARDROBE", "dresser": "DRESSER 108x50",
-             "chair": "NURSING CHAIR", "books": "READING NOOK"}
+             "chair": "NURSING CHAIR", "books": "READING NOOK", "shelves": "WALL SHELVES"}
     for it in items:
         x, y, w, h = it[1:5]
         msp.add_text(names[it[0]], height=5, dxfattribs={"layer": "TEXT"}).set_placement(
