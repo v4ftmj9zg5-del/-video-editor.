@@ -18,12 +18,13 @@ from floorplan import CHROME, OPTIONS, ROOM, check, iso  # noqa: E402
 T = 12            # wall thickness, cm
 SCALE = 20        # 1:20 -> 1 cm real = 0.5 mm on paper
 MM = 10 / SCALE   # paper mm per real cm
-PROJECT = "חדר תינוקת · משפחת לוי"
+PROJECT = ROOM.get("project", "חדר תינוקת · משפחת לוי")
 DATE = "02.11.2026"
 DRAWN = "Room Story Tell · תמר"
-NOTES = ["כל המידות בס״מ, נטו מקיר לקיר", "יש לאמת מידות באתר לפני הזמנה",
-         "מיקום השקעים לבירור מול הלקוחה", "מידות הארון: לפי הדגם שייבחר",
-         "אפשרות ג: מדף קיר קטן ליד הכורסה במקום שולחן צד"]
+NOTES = ROOM.get("notes", ["כל המידות בס״מ, נטו מקיר לקיר", "יש לאמת מידות באתר לפני הזמנה",
+                          "מיקום השקעים לבירור מול הלקוחה", "מידות הארון: לפי הדגם שייבחר",
+                          "אפשרות ג: מדף קיר קטן ליד הכורסה במקום שולחן צד"])
+SLEEP = ROOM.get("sleep", "crib")
 
 # lineweights in real-cm units (paper mm / MM)
 LW_WALL, LW_MED, LW_THIN, LW_HAIR = 0.5 / MM, 0.3 / MM, 0.18 / MM, 0.12 / MM
@@ -75,6 +76,20 @@ def furniture_shapes(item):
         s = [("rect", x + w - 18, y + 4, 16, h - 8, LW_MED),
              ("rect", x + 4, y + 2, w - 6, 12, LW_MED), ("rect", x + 4, y + h - 14, w - 6, 12, LW_MED),
              ("rect", x + 8, y + 14, w - 26, h - 28, LW_THIN)]
+    elif kind == "bunk":                 # bunk bed: mattress, upper-level cross, ladder on the open side
+        s += [("rect", x + 3, y + 3, w - 6, h - 6, LW_THIN), ("line", x + 3, y + 3, x + w - 3, y + h - 3, LW_HAIR),
+              ("line", x + w - 3, y + 3, x + 3, y + h - 3, LW_HAIR)]
+        lx = x + w if item[6] == "r" else x - 10
+        s.append(("rect", lx, y + h - 60, 10, 46, LW_THIN))
+        for i in range(1, 5):
+            s.append(("line", lx, y + h - 60 + i * 9.2, lx + 10, y + h - 60 + i * 9.2, LW_HAIR))
+    elif kind == "desk":
+        s.append(("circle", x + w / 2, y + h + 22, 17, LW_THIN))          # chair
+    elif kind == "storage":              # 2x2 cube unit
+        s += [("line", x + w / 2, y, x + w / 2, y + h, LW_HAIR), ("line", x, y + h / 2, x + w, y + h / 2, LW_HAIR)]
+    elif kind == "closet":               # existing built-in: doors line + X
+        s += [("line", x, y + 6, x + w, y + 6, LW_THIN), ("line", x, y, x + w, y + h, LW_HAIR),
+              ("line", x + w, y, x, y + h, LW_HAIR)]
     elif kind == "shelves":              # two floating shelves on the wall (above the rail)
         s = [("rect", x, y, w, h, LW_THIN), ("line", x + w / 2, y + 4, x + w / 2, y + h - 4, LW_HAIR)]
     elif kind == "chair":
@@ -95,6 +110,9 @@ def furniture_shapes(item):
 
 
 def rug(option_idx):
+    if "rugs" in ROOM:
+        k, cx, cy, r = ROOM["rugs"][option_idx]
+        return (k, cx, cy, r, LW_HAIR)
     if option_idx == 4:
         return ("circle", 162, 135, 72, LW_HAIR)
     return ("circle", 160, 150, 70, LW_HAIR) if option_idx == 1 else ("circle", 150, 140, 55, LW_HAIR)
@@ -134,8 +152,12 @@ def svg_sheet(idx, name, items):
     el.append(f'<line x1="{dx0}" y1="{H}" x2="{dx0}" y2="{H - (dx1 - dx0)}" stroke="#000" {sw(LW_MED)}/>')
     r = dx1 - dx0
     el.append(f'<path d="M{dx0},{H - r} A{r},{r} 0 0,1 {dx1},{H}" fill="none" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="4 3"/>')
-    # AC above door (hidden line)
-    el.append(f'<rect x="{dx0 - 5}" y="{H - 22}" width="{r + 10}" height="18" fill="none" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="6 3"/>')
+    # AC (hidden line): above the door, or where the profile puts it
+    if "ac" in ROOM:
+        ax, ay, aw, ah = ROOM["ac"]
+        el.append(f'<rect x="{ax}" y="{ay}" width="{aw}" height="{ah}" fill="none" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="6 3"/>')
+    else:
+        el.append(f'<rect x="{dx0 - 5}" y="{H - 22}" width="{r + 10}" height="18" fill="none" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="6 3"/>')
     # sockets
     for ox, oy in ROOM["outlets"]:
         el.append(f'<circle cx="{ox}" cy="{oy - 5}" r="4" fill="#fff" stroke="#000" {sw(LW_THIN)}/>'
@@ -151,7 +173,8 @@ def svg_sheet(idx, name, items):
             dash = ' stroke-dasharray="8 4"' if g[3] == LW_HAIR else ""
             el.append(f'<circle cx="{g[0]}" cy="{g[1]}" r="{g[2]}" fill="{"none" if dash else "#fff"}" stroke="#000" {sw(g[3])}{dash}/>')
     # labels (tags in circles + text)
-    tags = {"crib": "1", "wardrobe": "2", "dresser": "3", "chair": "4", "books": "5", "shelves": "5"}
+    tags = {"crib": "1", "wardrobe": "2", "dresser": "3", "chair": "4", "books": "5", "shelves": "5",
+            "bunk": "1", "closet": "2", "desk": "3", "storage": "4"}
     for it in items:
         x, y, w, h = it[1:5]
         cx, cy = x + w / 2, y + h / 2
@@ -185,9 +208,10 @@ def svg_sheet(idx, name, items):
     el += dim(0, -T, wx0, -T, -22)[:0]
     el += dim(-T, 0, -T, H, -24, vertical=True)
     el += dim(0, H + T, dx0, H + T, 22) + dim(dx0, H + T, dx1, H + T, 22) + dim(dx1, H + T, W, H + T, 22)
-    el += dim(0, H + T, W, H + T, 42)
+    if H <= 285:          # deeper rooms: the overall width would run off the sheet (the parts add up to it)
+        el += dim(0, H + T, W, H + T, 42)
     rects = {i[0]: i[1:5] for i in items}
-    c = rects["crib"]
+    c = rects[SLEEP]
     if c[0] > W / 2:   # crib on right wall: distance from window wall
         el += dim(W + T, 0, W + T, c[1], 24, vertical=True) + dim(W + T, c[1], W + T, c[1] + c[3], 24, vertical=True)
     else:
@@ -195,12 +219,17 @@ def svg_sheet(idx, name, items):
 
     # room label
     area = W * H / 10000
-    el.append(f'<text x="{W / 2 + 10}" y="{H / 2 - 30}" class="room">חדר תינוקת</text>'
-              f'<text x="{W / 2 + 10}" y="{H / 2 - 18}" class="area">שטח: {area:.2f} מ״ר · גובה תקרה: 260</text>')
-    el.append(f'<text x="{(wx0 + wx1) / 2}" y="52" class="note">ארגז תריס, 25 ס״מ מהתקרה</text>')
-    el.append(f'<text x="{dx0 + r / 2}" y="{H - 26}" class="note">מזגן (עילי)</text>')
+    el.append(f'<text x="{W / 2 + 10}" y="{H / 2 - 30}" class="room">{ROOM.get("label", "חדר תינוקת")}</text>'
+              f'<text x="{W / 2 + 10}" y="{H / 2 - 18}" class="area">שטח: {area:.2f} מ״ר · גובה תקרה: {ROOM.get("ceiling", 260)}</text>')
+    sx, sy = ROOM.get("shutter_note", ((wx0 + wx1) / 2, 52))
+    el.append(f'<text x="{sx}" y="{sy}" class="note">ארגז תריס, 25 ס״מ מהתקרה</text>')
+    if "ac" in ROOM:
+        ax, ay, aw, ah = ROOM["ac"]
+        el.append(f'<text x="{ax - 30}" y="{ay + ah / 2}" class="note">{ROOM.get("ac_label", "מזגן")}</text>')
+    else:
+        el.append(f'<text x="{dx0 + r / 2}" y="{H - 26}" class="note">מזגן (עילי)</text>')
     for ox, oy in ROOM["outlets"]:
-        el.append(f'<text x="{ox}" y="{oy - 14}" class="note">שקעים ?</text>')
+        el.append(f'<text x="{ox}" y="{oy - 14}" class="note">{ROOM.get("outlet_label", "שקעים ?")}</text>')
 
     drawing = "".join(el)
     legend = "".join(f"<tr><td class='n'>{n}</td><td>{t}</td></tr>" for n, t in [
@@ -209,7 +238,9 @@ def svg_sheet(idx, name, items):
     items_rows = []
     names = {"crib": "עריסה קיימת, מזרן 60×120", "wardrobe": "ארון בגדים (חדש)", "dresser": "שידה קיימת HEMNES",
              "chair": "כורסת הנקה קיימת + שולחן צד", "books": "פינת ספרים: מדפי תמונות, כרית, סלסלה",
-             "shelves": "2 מדפים צפים מעץ, מעל הקרניז"}
+             "shelves": "2 מדפים צפים מעץ, מעל הקרניז",
+             "bunk": "מיטת קומותיים (חדשה), מזרנים 90×200", "closet": "ארון קיר קיים",
+             "desk": "שולחן קיים מאיקאה + כיסא", "storage": "כוורת אחסון 2×2 ללגו ולצעצועים"}
     for it in items:
         w, h = it[3], it[4]
         a, b = (max(w, h), min(w, h))
@@ -220,8 +251,12 @@ def svg_sheet(idx, name, items):
     notes = "".join(f"<li>{n}</li>" for n in NOTES)
 
     # sheet: A4 landscape 297x210 mm; drawing group scaled to 1:20
-    crib_left = {i[0]: i for i in items}["crib"][1] < ROOM["w"] / 2
-    gx, gy = (122 if crib_left else 112), 31   # inner top-left corner on paper (mm), right of the title block
+    crib_left = {i[0]: i for i in items}[SLEEP][1] < ROOM["w"] / 2
+    if ROOM["w"] == 310:
+        gx, gy = (122 if crib_left else 112), 31   # inner top-left corner on paper (mm), right of the title block
+    else:                                          # other rooms: centre in the drawing area, keep dims on the sheet
+        gx = 118 if crib_left else 104
+        gy = 29
     return f"""
 <div class="sheet">
  <svg class="dwg" viewBox="0 0 297 210" width="297mm" height="210mm" xmlns="http://www.w3.org/2000/svg">
@@ -291,7 +326,8 @@ def write_dxf(path, idx, name, items):
     r = dx1 - dx0
     msp.add_line(f(dx0, H), f(dx0, H - r), dxfattribs={"layer": "OPENINGS"})
     msp.add_arc(f(dx0, H), r, 0, 90, dxfattribs={"layer": "OPENINGS"})
-    msp.add_lwpolyline([f(dx0 - 5, H - 22), f(dx1 + 5, H - 22), f(dx1 + 5, H - 4), f(dx0 - 5, H - 4)], close=True,
+    ax, ay, aw, ah = ROOM.get("ac", (dx0 - 5, H - 22, dx1 - dx0 + 10, 18))
+    msp.add_lwpolyline([f(ax, ay), f(ax + aw, ay), f(ax + aw, ay + ah), f(ax, ay + ah)], close=True,
                        dxfattribs={"layer": "HIDDEN", "linetype": "DASHED"})
     for kind, *g in [rug(idx)] + [p for it in items for p in furniture_shapes(it)]:
         if kind == "rect":
@@ -302,12 +338,13 @@ def write_dxf(path, idx, name, items):
         elif kind == "circle":
             msp.add_circle(f(g[0], g[1]), g[2], dxfattribs={"layer": "FURNITURE"})
     names = {"crib": "CRIB 66x124", "wardrobe": "WARDROBE", "dresser": "DRESSER 108x50",
-             "chair": "NURSING CHAIR", "books": "READING NOOK", "shelves": "WALL SHELVES"}
+             "chair": "NURSING CHAIR", "books": "READING NOOK", "shelves": "WALL SHELVES",
+             "bunk": "BUNK BED 97x206", "closet": "BUILT-IN CLOSET", "desk": "DESK 80x50", "storage": "CUBE STORAGE"}
     for it in items:
         x, y, w, h = it[1:5]
         msp.add_text(names[it[0]], height=5, dxfattribs={"layer": "TEXT"}).set_placement(
             f(x + w / 2, y + h / 2), align=TextEntityAlignment.MIDDLE_CENTER)
-    msp.add_text(f"NURSERY - LEVI - OPTION {idx}", height=8, dxfattribs={"layer": "TEXT"}).set_placement(
+    msp.add_text(f"{ROOM.get('dxf_title', 'NURSERY - LEVI')} - OPTION {idx}", height=8, dxfattribs={"layer": "TEXT"}).set_placement(
         f(W / 2, H + 75), align=TextEntityAlignment.MIDDLE_CENTER)
     ds = dict(dimstyle="EZ_CM_100_H25_CM", dxfattribs={"layer": "DIMS"},
               override={"dimtxt": 6, "dimasz": 4, "dimblk": "ARCHTICK", "dimexo": 2, "dimexe": 3, "dimdec": 0})

@@ -57,6 +57,32 @@ OPTIONS = {
 }
 
 
+# Another client room: select with ROOM_PROFILE=michal (simulation client, shared boys' room, rental)
+PROFILES = {
+    "michal": dict(
+        ROOM=dict(w=330, h=300, window=(110, 270), door=(30, 110), door_hinge="left",
+                  outlets=[(80, 0), (300, 0), (130, 300)], outlet_note="שקעים: לפי מה שהלקוחה סימנה",
+                  ac=(316, 20, 14, 80), ac_label="מזגן, גובה 220", ac_zone=(130, 10, 200, 110),
+                  sleep="bunk", label="חדר הבנים", ceiling=260,
+                  project="חדר הבנים · משפחת אהרוני", dxf_title="KIDS ROOM - AHARONI",
+                  rugs={1: ("circle", 212, 172, 58)}, shutter_note=(215, 103), outlet_label="שקע",
+                  notes=["כל המידות בס״מ, נטו מקיר לקיר", "דירה בשכירות: בלי צבע, מינימום קדיחות",
+                         "קומותיים: מעקה מלא למעלה, וסולם בצד הפנוי",
+                         "את כנפי המזגן לכוון כלפי מעלה, לא לכיוון המיטה",
+                         "כוורת האחסון: לעגן לקיר (קדיחה אחת)"]),
+        OPTIONS={
+            "א · קומותיים לאורך הקיר השמאלי": [
+                ("bunk", 0, 12, 97, 206, "#D7DFCC", "r", "קומותיים 97×206"),
+                ("desk", 160, 0, 80, 50, "#EFE6DA", "b", "שולחן 80×50"),
+                ("storage", 291, 100, 39, 77, "#F3E3B8", "l", "כוורת 77×39"),
+                ("closet", 180, 240, 150, 60, "#E9E4DA", "t", "ארון קיר 150×60"),
+            ],
+        }),
+}
+if os.environ.get("ROOM_PROFILE") in PROFILES:
+    ROOM, OPTIONS = PROFILES[os.environ["ROOM_PROFILE"]]["ROOM"], PROFILES[os.environ["ROOM_PROFILE"]]["OPTIONS"]
+
+
 def overlap(a, b):
     return a[0] < b[0] + b[2] and b[0] < a[0] + a[2] and a[1] < b[1] + b[3] and b[1] < a[1] + a[3]
 
@@ -86,11 +112,14 @@ def check(items):
         if fz:
             blocked = [b[7] for b in items if b is not a and overlap(fz, b[1:5])]
             notes.append(f"{'✗' if blocked else '✓'} מול {a[7]}: {CLEAR} ס״מ פנויים" + (f" (חסום ע״י {', '.join(blocked)})" if blocked else ""))
-    c = rects["crib"]
+    key = ROOM.get("sleep", "crib")
+    word = {"crib": "העריסה", "bunk": "מיטת הקומותיים"}[key]
+    c = rects[key]
     under_window = c[1] < 20 and c[0] < ROOM["window"][1] and c[0] + c[2] > ROOM["window"][0]
-    notes.append("✗ העריסה מתחת לחלון" if under_window else "✓ העריסה לא מתחת לחלון")
-    near_ac = overlap((ROOM["door"][0] - 30, ROOM["h"] - 140, 140, 140), c)
-    notes.append("⚠ העריסה קרובה לזרם של המזגן" if near_ac else "✓ העריסה רחוקה מהמזגן")
+    notes.append(f"✗ {word} מתחת לחלון" if under_window else f"✓ {word} לא מתחת לחלון")
+    acz = ROOM.get("ac_zone", (ROOM["door"][0] - 30, ROOM["h"] - 140, 140, 140))
+    near_ac = overlap(acz, c)
+    notes.append(f"⚠ {word} קרובה לזרם של המזגן" if near_ac else f"✓ {word} רחוקה מהמזגן")
     return notes
 
 
@@ -120,16 +149,22 @@ def svg(name, items, scale=2):
     out.append(f'<path d="M0,0 H{ROOM["window"][0]} M{ROOM["window"][1]},0 H{W} V{H} H{dx1} M{dx0},{H} H0 V0" fill="none" stroke="#4A3226" stroke-width="5" stroke-linecap="square"/>')
     wx0, wx1 = ROOM["window"]
     out.append(f'<rect x="{wx0}" y="-3" width="{wx1 - wx0}" height="6" fill="#D7DFCC" stroke="#5F7356"/>')
-    out.append(f'<text x="{(wx0 + wx1) / 2}" y="-8" font-size="8" text-anchor="middle" fill="#5F7356">חלון 140 · ארגז תריס 25 ס״מ מהתקרה</text>')
-    out.append(f'<rect x="{dx0}" y="{H + 4}" width="{dx1 - dx0}" height="5" fill="#E9D3CB" stroke="#A0665F" stroke-width=".6"/>')
-    out.append(f'<text x="{(dx0 + dx1) / 2}" y="{H + 18}" font-size="7.5" text-anchor="middle" fill="#A0665F">מזגן מעל הדלת</text>')
+    out.append(f'<text x="{(wx0 + wx1) / 2}" y="-8" font-size="8" text-anchor="middle" fill="#5F7356">חלון {ROOM["window"][1] - ROOM["window"][0]} · ארגז תריס 25 ס״מ מהתקרה</text>')
+    if "ac" not in ROOM:
+        out.append(f'<rect x="{dx0}" y="{H + 4}" width="{dx1 - dx0}" height="5" fill="#E9D3CB" stroke="#A0665F" stroke-width=".6"/>')
+    if "ac" not in ROOM:
+        out.append(f'<text x="{(dx0 + dx1) / 2}" y="{H + 18}" font-size="7.5" text-anchor="middle" fill="#A0665F">מזגן מעל הדלת</text>')
+    else:
+        ax, ay, aw, ah = ROOM["ac"]
+        out.append(f'<rect x="{ax}" y="{ay}" width="{aw}" height="{ah}" fill="#E9D3CB" stroke="#A0665F" stroke-width=".6"/>')
+        out.append(f'<text x="{ax - 4}" y="{ay + ah / 2}" font-size="7" text-anchor="end" fill="#A0665F">{ROOM["ac_label"]}</text>')
     out.append(f'<text x="{(dx0 + dx1) / 2}" y="{H - 30}" font-size="8" text-anchor="middle" fill="#8C7466">דלת 80</text>')
     for ox, oy in ROOM["outlets"]:
         out.append(f'<circle cx="{ox}" cy="{oy}" r="4" fill="#fff" stroke="#A0665F" stroke-width="1.2"/>')
         out.append(f'<text x="{ox}" y="{oy + 16}" font-size="8" text-anchor="middle" fill="#A0665F">שקעים ?</text>')
     # dimensions
-    out.append(f'<text x="{W / 2}" y="{-24}" font-size="9" text-anchor="middle" fill="#4A3226">310 ס״מ</text>')
-    out.append(f'<text x="{-14}" y="{H / 2}" font-size="9" text-anchor="middle" fill="#4A3226" transform="rotate(-90 {-14} {H / 2})">280 ס״מ</text>')
+    out.append(f'<text x="{W / 2}" y="{-24}" font-size="9" text-anchor="middle" fill="#4A3226">{W} ס״מ</text>')
+    out.append(f'<text x="{-14}" y="{H / 2}" font-size="9" text-anchor="middle" fill="#4A3226" transform="rotate(-90 {-14} {H / 2})">{H} ס״מ</text>')
     # scale bar
     out.append(f'<line x1="{W - 100}" y1="{H + 40}" x2="{W}" y2="{H + 40}" stroke="#4A3226" stroke-width="1.2"/>')
     out.append(f'<text x="{W - 50}" y="{H + 52}" font-size="7.5" text-anchor="middle" fill="#4A3226">1 מטר</text>')
