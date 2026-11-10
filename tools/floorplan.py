@@ -60,22 +60,23 @@ OPTIONS = {
 # Another client room: select with ROOM_PROFILE=michal (simulation client, shared boys' room, rental)
 PROFILES = {
     "michal": dict(
-        ROOM=dict(w=330, h=300, window=(110, 270), door=(30, 110), door_hinge="left",
-                  outlets=[(80, 0), (300, 0), (130, 300)], outlet_note="שקעים: לפי מה שהלקוחה סימנה",
-                  ac=(316, 20, 14, 80), ac_label="מזגן, גובה 220", ac_zone=(130, 10, 200, 110),
+        ROOM=dict(w=330, h=300, window=(60, 220), door=(230, 310), door_hinge="right",
+                  outlets=[(40, 0), (250, 0), (150, 300)], outlet_note="שקעים: לפי מה שהלקוחה סימנה",
+                  ac=(0, 220, 14, 80), ac_label="מזגן, גובה 220", ac_label_at=(78, 262), ac_zone=(0, 210, 200, 90),
                   sleep="bunk", label="חדר הבנים", ceiling=260,
                   project="חדר הבנים · משפחת אהרוני", dxf_title="KIDS ROOM - AHARONI",
-                  rugs={1: ("circle", 212, 172, 58)}, shutter_note=(215, 103), outlet_label="שקע",
+                  rugs={1: ("circle", 165, 150, 56)}, shutter_note=(110, 103), outlet_label="שקע",
                   notes=["כל המידות בס״מ, נטו מקיר לקיר", "דירה בשכירות: בלי צבע, מינימום קדיחות",
                          "קומותיים: מעקה מלא למעלה, וסולם בצד הפנוי",
                          "את כנפי המזגן לכוון כלפי מעלה, לא לכיוון המיטה",
-                         "כוורת האחסון: לעגן לקיר (קדיחה אחת)"]),
+                         "כוורת האחסון: לעגן לקיר (קדיחה אחת)",
+                         "טפט נשלף (Peel & Stick) על הקיר שליד הקומותיים"]),
         OPTIONS={
-            "א · קומותיים לאורך הקיר השמאלי": [
-                ("bunk", 0, 12, 97, 206, "#D7DFCC", "r", "קומותיים 97×206"),
-                ("desk", 160, 0, 80, 50, "#EFE6DA", "b", "שולחן 80×50"),
-                ("storage", 291, 100, 39, 77, "#F3E3B8", "l", "כוורת 77×39"),
-                ("closet", 180, 240, 150, 60, "#E9E4DA", "t", "ארון קיר 150×60"),
+            "א · קומותיים על הקיר הימני": [
+                ("bunk", 233, 10, 97, 206, "#D7DFCC", "l", "קומותיים 97×206"),
+                ("desk", 70, 0, 80, 50, "#EFE6DA", "b", "שולחן 80×50"),
+                ("storage", 0, 215, 39, 77, "#F3E3B8", "r", "כוורת 77×39"),
+                ("closet", 0, 60, 60, 150, "#E9E4DA", "r", "ארון קיר 150×60"),
             ],
         }),
 }
@@ -137,8 +138,10 @@ def svg(name, items, scale=2):
             out.append(f'<rect x="{fz[0]}" y="{fz[1]}" width="{fz[2]}" height="{fz[3]}" fill="#5F7356" opacity=".08"/>')
     # door swing
     dx0, dx1 = ROOM["door"]
-    out.append(f'<path d="M{dx0},{H} L{dx0},{H - 80} A80,80 0 0,1 {dx1},{H}" fill="#8C7466" opacity=".08" stroke="#8C7466" stroke-dasharray="3 3" stroke-width=".8"/>')
-    out.append(f'<line x1="{dx0}" y1="{H}" x2="{dx0}" y2="{H - 80}" stroke="#8C7466" stroke-width="2"/>')
+    hx, ox = (dx1, dx0) if ROOM.get("door_hinge") == "right" else (dx0, dx1)
+    sweep = 0 if hx == dx1 else 1
+    out.append(f'<path d="M{hx},{H} L{hx},{H - 80} A80,80 0 0,{sweep} {ox},{H}" fill="#8C7466" opacity=".08" stroke="#8C7466" stroke-dasharray="3 3" stroke-width=".8"/>')
+    out.append(f'<line x1="{hx}" y1="{H}" x2="{hx}" y2="{H - 80}" stroke="#8C7466" stroke-width="2"/>')
     # furniture
     for _, x, y, w, h, col, f, lab in items:
         out.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="2" fill="{col}" stroke="#4A3226" stroke-width=".8"/>')

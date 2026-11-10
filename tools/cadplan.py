@@ -149,9 +149,10 @@ def svg_sheet(idx, name, items):
         el.append(f'<line x1="{wx0}" y1="{yy}" x2="{wx1}" y2="{yy}" stroke="#000" {sw(LW_THIN)}/>')
     el.append(f'<line x1="{wx0}" y1="{T * 0.6}" x2="{wx1}" y2="{T * 0.6}" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="6 3"/>')
     # door leaf + swing
-    el.append(f'<line x1="{dx0}" y1="{H}" x2="{dx0}" y2="{H - (dx1 - dx0)}" stroke="#000" {sw(LW_MED)}/>')
     r = dx1 - dx0
-    el.append(f'<path d="M{dx0},{H - r} A{r},{r} 0 0,1 {dx1},{H}" fill="none" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="4 3"/>')
+    hx, ox, sweep = (dx1, dx0, 0) if ROOM.get("door_hinge") == "right" else (dx0, dx1, 1)
+    el.append(f'<line x1="{hx}" y1="{H}" x2="{hx}" y2="{H - r}" stroke="#000" {sw(LW_MED)}/>')
+    el.append(f'<path d="M{hx},{H - r} A{r},{r} 0 0,{sweep} {ox},{H}" fill="none" stroke="#000" {sw(LW_HAIR)} stroke-dasharray="4 3"/>')
     # AC (hidden line): above the door, or where the profile puts it
     if "ac" in ROOM:
         ax, ay, aw, ah = ROOM["ac"]
@@ -213,7 +214,8 @@ def svg_sheet(idx, name, items):
     rects = {i[0]: i[1:5] for i in items}
     c = rects[SLEEP]
     if c[0] > W / 2:   # crib on right wall: distance from window wall
-        el += dim(W + T, 0, W + T, c[1], 24, vertical=True) + dim(W + T, c[1], W + T, c[1] + c[3], 24, vertical=True)
+        off = 24 if W == 310 else 18
+        el += dim(W + T, 0, W + T, c[1], off, vertical=True) + dim(W + T, c[1], W + T, c[1] + c[3], off, vertical=True)
     else:
         el += dim(-T, 0, -T, c[1], -38, vertical=True) + dim(-T, c[1], -T, c[1] + c[3], -38, vertical=True)
 
@@ -225,7 +227,8 @@ def svg_sheet(idx, name, items):
     el.append(f'<text x="{sx}" y="{sy}" class="note">ארגז תריס, 25 ס״מ מהתקרה</text>')
     if "ac" in ROOM:
         ax, ay, aw, ah = ROOM["ac"]
-        el.append(f'<text x="{ax - 30}" y="{ay + ah / 2}" class="note">{ROOM.get("ac_label", "מזגן")}</text>')
+        lx, ly = ROOM.get("ac_label_at", (ax - 30, ay + ah / 2))
+        el.append(f'<text x="{lx}" y="{ly}" class="note">{ROOM.get("ac_label", "מזגן")}</text>')
     else:
         el.append(f'<text x="{dx0 + r / 2}" y="{H - 26}" class="note">מזגן (עילי)</text>')
     for ox, oy in ROOM["outlets"]:
@@ -255,7 +258,7 @@ def svg_sheet(idx, name, items):
     if ROOM["w"] == 310:
         gx, gy = (122 if crib_left else 112), 31   # inner top-left corner on paper (mm), right of the title block
     else:                                          # other rooms: centre in the drawing area, keep dims on the sheet
-        gx = 118 if crib_left else 104
+        gx = 118 if crib_left else 108
         gy = 29
     return f"""
 <div class="sheet">
@@ -324,8 +327,12 @@ def write_dxf(path, idx, name, items):
     msp.add_line(f(wx0, -T), f(wx1, -T), dxfattribs={"layer": "OPENINGS"})
     msp.add_line(f(wx0, 0), f(wx1, 0), dxfattribs={"layer": "OPENINGS"})
     r = dx1 - dx0
-    msp.add_line(f(dx0, H), f(dx0, H - r), dxfattribs={"layer": "OPENINGS"})
-    msp.add_arc(f(dx0, H), r, 0, 90, dxfattribs={"layer": "OPENINGS"})
+    if ROOM.get("door_hinge") == "right":
+        msp.add_line(f(dx1, H), f(dx1, H - r), dxfattribs={"layer": "OPENINGS"})
+        msp.add_arc(f(dx1, H), r, 90, 180, dxfattribs={"layer": "OPENINGS"})
+    else:
+        msp.add_line(f(dx0, H), f(dx0, H - r), dxfattribs={"layer": "OPENINGS"})
+        msp.add_arc(f(dx0, H), r, 0, 90, dxfattribs={"layer": "OPENINGS"})
     ax, ay, aw, ah = ROOM.get("ac", (dx0 - 5, H - 22, dx1 - dx0 + 10, 18))
     msp.add_lwpolyline([f(ax, ay), f(ax + aw, ay), f(ax + aw, ay + ah), f(ax, ay + ah)], close=True,
                        dxfattribs={"layer": "HIDDEN", "linetype": "DASHED"})
