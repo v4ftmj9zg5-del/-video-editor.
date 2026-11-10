@@ -1,0 +1,76 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>טפטים לקיר הקומותיים</title>
+<style>
+@font-face { font-family: "Frank Ruhl Libre"; src: url("file:///root/.fonts/FrankRuhlLibre.ttf"); font-weight: 300 900; }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo.ttf"); font-weight: 100 900; }
+@page { size: A4 landscape; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { width: 297mm; height: 210mm; background: #F7F3EC; color: #2B2A26; font-family: Heebo; font-weight: 350; direction: rtl;
+       -webkit-print-color-adjust: exact; print-color-adjust: exact; position: relative; overflow: hidden; }
+.brand { position: absolute; top: 8mm; left: 12mm; right: 12mm; display: flex; justify-content: space-between; direction: ltr;
+         font-size: 7pt; letter-spacing: .3em; color: #7E776B; text-transform: uppercase; }
+header { position: absolute; top: 14mm; right: 12mm; left: 12mm; display: flex; align-items: baseline; gap: 6mm; }
+h1 { font-family: "Frank Ruhl Libre"; font-weight: 600; font-size: 21pt; margin: 0; }
+header p { margin: 0; font-size: 9pt; color: #4a463e; }
+.grid { position: absolute; top: 30mm; right: 12mm; left: 12mm; bottom: 12mm; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 5mm; }
+figure { margin: 0; display: flex; flex-direction: column; }
+canvas { width: 100%; flex: 1; min-height: 0; border-radius: 2.5mm; display: block; box-shadow: 0 .6mm 2mm rgba(60,50,40,.12); }
+figcaption { padding-top: 1.8mm; font-size: 8pt; line-height: 1.4; }
+figcaption b { font-size: 9.5pt; font-weight: 600; }
+.lvl { float: left; font-size: 7.5pt; color: #7B8452; letter-spacing: .05em; }
+.foot { position: absolute; bottom: 5mm; left: 12mm; right: 12mm; display: flex; justify-content: space-between; font-size: 7pt; color: #7E776B; }
+</style></head><body>
+<div class="brand"><span>Room Story Tell</span><span>Wallpaper options · Aharoni</span></div>
+<header><h1>טפט לקיר אחד, בשקט</h1><p>שש אפשרויות לקיר שליד הקומותיים. כולן בגוונים של החדר, ואף אחת לא "צועקת". כולן קיימות כטפט נשלף.</p></header>
+<div class="grid">
+  <figure><canvas id="w1" width="900" height="560"></canvas><figcaption><span class="lvl">הכי שקט</span><b>1 · קו הרים</b><br>קו דק אחד בכחול לילה על רקע שמנת, כמו ציור עט. נקי ומבוגר.</figcaption></figure>
+  <figure><canvas id="w2" width="900" height="560"></canvas><figcaption><span class="lvl">הכי שקט</span><b>2 · יער טון־על־טון</b><br>עצים קטנים בזית בהיר על שמנת. מרחוק נראה כמו מרקם, מקרוב יער.</figcaption></figure>
+  <figure><canvas id="w3" width="900" height="560"></canvas><figcaption><span class="lvl">שקט</span><b>3 · שמי לילה</b><br>כוכבים וקבוצות כוכבים בחרדל על כחול לילה רך. עוזר ליונתן להירדם בלי פחד.</figcaption></figure>
+  <figure><canvas id="w4" width="900" height="560"></canvas><figcaption><span class="lvl">הכי שקט</span><b>4 · פסים צרים</b><br>פסים אנכיים דקים בזית ושמנת. מגביה את התקרה, ומתאים גם לנער.</figcaption></figure>
+  <figure><canvas id="w5" width="900" height="560"></canvas><figcaption><span class="lvl">שקט</span><b>5 · גבעות רק למטה</b><br>נוף נמוך עד גובה המיטה התחתונה, ומעליו קיר שמנת נקי. הדרמה רק בחצי.</figcaption></figure>
+  <figure><canvas id="w6" width="900" height="560"></canvas><figcaption><span class="lvl">שקט</span><b>6 · מפה טופוגרפית</b><br>קווי גובה של מפה בכחול בהיר. מרגיש כמו מסע, בלי שום דמות.</figcaption></figure>
+</div>
+<div class="foot"><span>חדר הבנים · משפחת אהרוני</span><span>ההמלצה שלי: 2 או 5 · דוגמאות סגנון, לבחירה מול קטלוג</span></div>
+<script>
+const R = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
+const C = {olive:'#7B8452', navy:'#2F3E56', mustard:'#D4A640', wood:'#C9A27A', cream:'#F1E9DA', paper:'#F4EFE6'};
+function bunk(g, w, h){                       // room context: floor, bunk silhouette
+  const fy = h*.86;
+  g.fillStyle = '#d8d4cc'; g.fillRect(0, fy, w, h-fy);
+  g.fillStyle = 'rgba(0,0,0,.05)'; g.fillRect(0, fy, w, 6);
+  const x0 = w*.40, x1 = w*.92, top = h*.30;
+  g.fillStyle = C.wood;
+  for (const x of [x0, x1-14]) g.fillRect(x, top, 14, fy-top);
+  for (const y of [h*.72, h*.45]) g.fillRect(x0, y, x1-x0, 12);
+  g.fillRect(x0, top, x1-x0, 8);
+  g.fillStyle = '#f6f3ee'; g.fillRect(x0+14, h*.66, x1-x0-28, h*.06); g.fillRect(x0+14, h*.39, x1-x0-28, h*.06);
+  g.fillStyle = C.navy; g.fillRect(x0+60, h*.68, x1-x0-74, h*.04);
+  g.fillStyle = C.olive; g.fillRect(x0+60, h*.41, x1-x0-74, h*.04);
+  g.fillStyle = C.mustard; g.fillRect(x0+26, h*.63, 34, 26);
+  g.fillStyle = C.wood; for (let i=0;i<5;i++) g.fillRect(x0-30, h*.48 + i*h*.075, 30, 7);
+  g.fillRect(x0-34, h*.45, 7, fy-h*.45);
+  // rug
+  g.fillStyle = '#e8dfcf'; g.beginPath(); g.ellipse(w*.22, fy+ (h-fy)*.55, w*.17, (h-fy)*.38, 0, 0, 7); g.fill();
+}
+function w1(g,w,h){ g.fillStyle=C.paper; g.fillRect(0,0,w,h); g.strokeStyle=C.navy; g.lineWidth=2.2; g.lineJoin='round';
+  for (const [base, amp, f, a] of [[h*.42,h*.14,3.2,.9],[h*.52,h*.10,4.7,.45]]) { g.globalAlpha=a; g.beginPath(); for(let x=0;x<=w;x+=6){ const y=base-amp*Math.abs(Math.sin(x/w*Math.PI*f))-amp*.3*Math.sin(x/w*Math.PI*f*2.7); x?g.lineTo(x,y):g.moveTo(x,y);} g.stroke(); }
+  g.globalAlpha=1; g.beginPath(); g.arc(w*.78,h*.18,h*.05,0,7); g.stroke(); }
+function w2(g,w,h){ g.fillStyle=C.paper; g.fillRect(0,0,w,h); const r=R(5);
+  for(let y=24;y<h;y+=46) for(let x=(y/46%2)*22;x<w;x+=44){ const s=10+r()*5; g.fillStyle=`rgba(123,132,82,${.28+r()*.14})`; g.beginPath(); g.moveTo(x,y-s*1.7); g.lineTo(x-s*.65,y); g.lineTo(x+s*.65,y); g.fill(); g.fillRect(x-1,y,2,4);} }
+function w3(g,w,h){ g.fillStyle='#3E4D66'; g.fillRect(0,0,w,h); const r=R(9);
+  for(let i=0;i<140;i++){ g.fillStyle=`rgba(241,233,218,${.25+r()*.4})`; const s=1+r()*1.8; g.fillRect(r()*w,r()*h,s,s); }
+  const star=(x,y,s)=>{ g.fillStyle=C.mustard; g.beginPath(); for(let i=0;i<10;i++){ const a=i*Math.PI/5-Math.PI/2, rr=i%2?s*.42:s; g.lineTo(x+rr*Math.cos(a), y+rr*Math.sin(a)); } g.fill(); };
+  const cons=[[[.12,.15],[.2,.22],[.28,.18],[.34,.28]],[[.6,.12],[.68,.2],[.76,.14],[.82,.24],[.7,.3]]];
+  g.strokeStyle='rgba(212,166,64,.45)'; g.lineWidth=1.4;
+  for(const c of cons){ g.beginPath(); c.forEach(([x,y],i)=> i?g.lineTo(x*w,y*h):g.moveTo(x*w,y*h)); g.stroke(); c.forEach(([x,y])=>star(x*w,y*h,7)); }
+  g.fillStyle='#E9D9A8'; g.beginPath(); g.arc(w*.5,h*.16,h*.045,0,7); g.fill(); g.fillStyle='#3E4D66'; g.beginPath(); g.arc(w*.515,h*.15,h*.04,0,7); g.fill(); }
+function w4(g,w,h){ g.fillStyle=C.paper; g.fillRect(0,0,w,h); for(let x=0;x<w;x+=28){ g.fillStyle='rgba(123,132,82,.32)'; g.fillRect(x,0,9,h);} }
+function w5(g,w,h){ g.fillStyle=C.paper; g.fillRect(0,0,w,h);
+  const ridge=(base,amp,col,f)=>{ g.fillStyle=col; g.beginPath(); g.moveTo(0,h); g.lineTo(0,base); for(let x=0;x<=w;x+=w/80){ g.lineTo(x, base-amp*(.5+.5*Math.sin(x/w*Math.PI*f+f))); } g.lineTo(w,h); g.fill(); };
+  ridge(h*.58,h*.06,'#DDE0CB',3.2); ridge(h*.64,h*.05,'#C7CCAE',4.1); ridge(h*.70,h*.04,'#ABB18C',2.6);
+  g.fillStyle=C.mustard; g.globalAlpha=.85; g.beginPath(); g.arc(w*.16,h*.48,h*.035,0,7); g.fill(); g.globalAlpha=1; }
+function w6(g,w,h){ g.fillStyle=C.paper; g.fillRect(0,0,w,h); g.strokeStyle='rgba(79,110,150,.38)'; g.lineWidth=1.6;
+  for (const [cx,cy] of [[w*.25,h*.3],[w*.75,h*.55]]) for(let k=1;k<9;k++){ g.beginPath(); for(let t=0;t<=Math.PI*2+.1;t+=.12){ const rr=k*h*.055*(1+.18*Math.sin(3*t+k)+.08*Math.cos(5*t)); const x=cx+rr*1.5*Math.cos(t), y=cy+rr*Math.sin(t); t?g.lineTo(x,y):g.moveTo(x,y);} g.stroke(); } }
+[w1,w2,w3,w4,w5,w6].forEach((fn,i)=>{ const c=document.getElementById('w'+(i+1)), g=c.getContext('2d'); fn(g,c.width,c.height); bunk(g,c.width,c.height); });
+window.done=true;
+</script></body></html>
