@@ -1,6 +1,8 @@
 # Interior-design Reels studio
 
-The user is an Instagram creator in interior design. Talk to her in **Hebrew** only.
+The user is Tamar (`roomstorytell_`), kids' and nursery room designer launching an online
+design service. Talk to her in **Hebrew** only. **Read docs/studio_context.md first**: business,
+packages, existing tools, simulations and open items from earlier sessions.
 She sends renders/photos/clips and Hebrew instructions; we deliver publish-ready Reels.
 
 ## Role & quality bar
