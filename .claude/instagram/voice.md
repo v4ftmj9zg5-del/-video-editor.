@@ -61,8 +61,8 @@ Draft written from two reels: "reel_about_me" (38s intro) and "5 nursery mistake
 - **Words I would never say out loud:** TODO
 - **Do I swear:** no (assumed)
 - **Emoji in captions:** TODO
-- **Face on camera:** yes, to-camera, natural light, home setting, white top,
-  headscarf; burned-in white Hebrew subtitles, centred, 1-3 words at a time.
+- **Face on camera:** yes, to-camera, natural light, home or nursery setting;
+  burned-in Hebrew subtitles mid-frame, 1-3 words at a time.
 - **Voiceover or to-camera:** to-camera
 - **Pace:** ~170 wpm (about 108 words in 38s, ~225 words in 80s). Use `beats.py --wpm 170`.
 
