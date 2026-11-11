@@ -53,3 +53,16 @@ Files sent to the user must be < 30 MB (re-encode with -crf ~20 -maxrate 11M if 
 - Never claim a video is rendered unless the file exists; check frames before sending.
 - Music: the user adds licensed/trending audio in Instagram, or supplies a file she has rights to.
 - Don't commit video files (see .gitignore); commit tools/ code.
+
+## Instagram skills (.claude/skills/ig-*)
+Vendored from github.com/Jakeschincariol/instagram-agent-skill (MIT, see
+.claude/skills/LICENSE-instagram-agent-skill): /ig-reel, /ig-caption, /ig-carousel,
+/ig-story, /ig-plan, /ig-profile, /ig-viral, /ig-comment, /ig-reply, /ig-dm,
+/ig-repurpose, /ig-audit, /ig-human.
+- Local changes: data lives in `.claude/instagram/` (repo, not `~/`, because the cloud
+  container is ephemeral); ig-human keeps bidi marks (RLM/LRM/isolates) for Hebrew.
+- Her voice profile: copy `.claude/instagram/voice.template.md` to `voice.md` and fill it.
+- Write all copy in Hebrew. hookscore/beats/humanize/detect use English word lists, so on
+  Hebrew text treat their scores as rough hints only; judge Hebrew hooks yourself.
+- Safe zones and video spec in this file override the ones in the skills.
+- The skills only write; never post anything for her.
