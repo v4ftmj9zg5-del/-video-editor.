@@ -55,3 +55,13 @@ when answers came in English).
 ## Open offers she hasn't confirmed
 W/D/H fields in the questionnaire; Google Form for the landing page; her own voice instead of AI
 VO; confirm Noa's socket location.
+
+## Instagram performance snapshot (Metricool, brandId 7377941, pulled 2026-11-11)
+13 reels, 31 Aug - 26 Oct 2026. Views 174-699 (median ~338), reach 123-439.
+3-second hold 16-43% (skip 57-84%); avg watch 4.6-11.9 s. Saves 0-2, shares 0-2 per reel.
+- Best reach: intro "נעים מאוד, אני תמר" (20 Oct, 699 views, 43% hold) and an uncaptioned
+  reel 26 Oct (506 views, 43% hold).
+- Longest watch: "5 nursery mistakes" (12 Oct, 11.9 s), focal-point question (10.5 s),
+  curtains (10.2 s): list / practical-tip reels hold attention best.
+- Weakest: lighting reel 19 Oct (84% skip, 174 views): hook didn't stop the scroll.
+- Main gaps: first 3 seconds, and almost no saves/shares (needs save-worthy, specific tips).
