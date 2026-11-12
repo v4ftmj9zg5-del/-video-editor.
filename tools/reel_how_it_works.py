@@ -23,9 +23,20 @@ XF = 0.32                 # crossfade seconds
 
 
 def font(name, size, weight=None):
-    f = ImageFont.truetype(os.path.join(FONTS, name), size, layout_engine=ImageFont.Layout.RAQM)
+    """Variable font with a weight axis, or a static '<Name>-<weight>.ttf' next to it."""
+    path = os.path.join(FONTS, name)
     if weight:
-        f.set_variation_by_axes([weight])
+        static = path.replace(".ttf", f"-{weight}.ttf")
+        if os.path.exists(static):
+            return ImageFont.truetype(static, size, layout_engine=ImageFont.Layout.RAQM)
+    if not os.path.exists(path):                      # e.g. a handwriting font missing on this machine
+        path = os.path.join(FONTS, "FrankRuhlLibre.ttf")
+    f = ImageFont.truetype(path, size, layout_engine=ImageFont.Layout.RAQM)
+    if weight:
+        try:
+            f.set_variation_by_axes([weight])
+        except OSError:
+            pass
     return f
 
 
