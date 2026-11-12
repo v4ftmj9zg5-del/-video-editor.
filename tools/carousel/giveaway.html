@@ -1,0 +1,161 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>carousel · giveaway</title>
+<!-- Images resolve from IMG (set by the renderer via ?img=...); same visual language as intro.html. -->
+<style>
+@font-face { font-family: "Gveret"; src: url("file:///root/.fonts/GveretLevin.ttf"); }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo-300.ttf"); font-weight: 300; }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo-400.ttf"); font-weight: 400; }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo-500.ttf"); font-weight: 500; }
+:root { --bg: #F0EEE7; --ink: #111; --soft: #3d3a36; --sage: #6E7F5E; --rose: #D9B8AE; --leaf: #E3E7DA; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #888; font-family: "Heebo"; }
+.slide, .story { background: var(--bg); position: relative; overflow: hidden; direction: rtl; color: var(--ink); margin-bottom: 20px; }
+.slide { width: 1080px; height: 1350px; }
+.story { width: 1080px; height: 1920px; }
+.handle { position: absolute; top: 106px; left: 108px; direction: ltr; font: 400 25px "Heebo"; letter-spacing: .08em; }
+.bar { position: absolute; bottom: 104px; left: 108px; right: 98px; display: flex; justify-content: space-between; direction: ltr;
+       font: 400 26px "Heebo"; letter-spacing: .02em; align-items: center; }
+.bar span { display: flex; align-items: center; gap: 22px; }
+.bar svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.hand { font-family: "Gveret"; font-size: 84px; line-height: 1.32; position: absolute; right: 80px; left: 80px; }
+.body { font: 300 38px/1.6 "Heebo"; color: var(--soft); position: absolute; right: 108px; left: 108px; }
+.body b { font-weight: 500; color: var(--ink); }
+.photo { position: absolute; object-fit: cover; display: block; box-shadow: 0 18px 40px rgba(0,0,0,.12); }
+.tag { position: absolute; font: 400 24px "Heebo"; color: var(--soft); background: rgba(240,238,231,.92); padding: 6px 18px; border-radius: 30px; }
+
+/* cover */
+.cover .photo { inset: 0; width: 100%; height: 100%; box-shadow: none; }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,24,20,.72) 0%, rgba(30,24,20,.25) 45%, rgba(0,0,0,0) 62%); }
+.cover > :not(.photo) { z-index: 1; }
+.cover .handle { color: #fff; }
+.cover .gift { position: absolute; right: 96px; bottom: 530px; font: 500 30px "Heebo"; letter-spacing: .18em; color: #fff;
+               border: 1.5px solid rgba(255,255,255,.8); border-radius: 40px; padding: 10px 28px; }
+.cover .t1 { position: absolute; right: 96px; bottom: 250px; font-family: "Gveret"; font-size: 112px; line-height: 1.12; color: #fff; }
+.cover .t2 { position: absolute; right: 100px; bottom: 192px; font: 300 38px "Heebo"; color: #fff; opacity: .94; }
+.cover .bar { color: #fff; }
+
+.steps { position: absolute; right: 108px; left: 108px; list-style: none; }
+.steps li { display: flex; gap: 34px; align-items: flex-start; margin-bottom: 46px; font: 300 38px/1.45 "Heebo"; color: var(--soft); }
+.steps li b { font-weight: 500; color: var(--ink); }
+.steps .n { flex: 0 0 74px; height: 74px; border-radius: 50%; background: var(--leaf); display: grid; place-items: center;
+            font: 400 38px "Heebo"; color: var(--ink); }
+.dots { list-style: none; }
+.dots li { display: flex; align-items: center; gap: 26px; font: 300 40px/1.4 "Heebo"; margin-bottom: 26px; color: var(--soft); }
+.dots li::before { content: ""; flex: 0 0 16px; height: 16px; border-radius: 50%; background: var(--sage); }
+.worth { position: absolute; right: 108px; font: 400 34px "Heebo"; background: var(--leaf); padding: 14px 34px; border-radius: 50px; }
+.date { position: absolute; right: 108px; left: 108px; display: flex; gap: 26px; }
+.date div { flex: 1; background: #fff; border-radius: 28px; padding: 30px 34px; }
+.date small { display: block; font: 400 26px "Heebo"; color: var(--sage); letter-spacing: .06em; margin-bottom: 6px; }
+.date b { font: 500 46px "Heebo"; }
+.date span { display: block; font: 300 28px "Heebo"; color: var(--soft); }
+.fine { position: absolute; right: 108px; left: 108px; font: 300 24px/1.6 "Heebo"; color: #6b655d; }
+
+/* stories: keep text between y 260 and 1540 */
+.story .handle { top: 270px; }
+.story .hand { right: 90px; left: 90px; }
+.story .body { right: 110px; left: 110px; }
+.sticker { position: absolute; right: 50%; transform: translateX(50%); width: 640px; height: 170px; border: 3px dashed rgba(17,17,17,.25);
+           border-radius: 36px; display: grid; place-items: center; font: 300 28px "Heebo"; color: #8a837a; }
+</style></head><body>
+
+<!-- 1 · cover -->
+<section class="slide cover">
+  <img class="photo" data-src="noa.png">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="gift">מתנה לעוקבות</div>
+  <div class="t1"><span style="font:300 104px Heebo">3</span> חדרי ילדים<br>בעיצוב במתנה</div>
+  <div class="t2">עיצוב אונליין מלא, בשווי 1,000 ₪ לכל חדר</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 2 · what the winners get -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:220px">״מה הזוכות מקבלות?״</div>
+  <ul class="dots body" style="top:400px">
+    <li>שיחת היכרות בזום</li>
+    <li>תוכנית העמדה מדויקת לחדר</li>
+    <li>הדמיה: איך החדר ייראה באמת</li>
+    <li>רשימת קניות עם קישורים ומחירים</li>
+    <li>שבוע ליווי בוואטסאפ</li>
+  </ul>
+  <img class="photo" data-src="plan.png" style="left:108px; top:860px; width:400px; height:250px; object-fit:contain; background:#fff; padding:14px">
+  <img class="photo" data-src="nook.png" style="left:540px; top:860px; width:400px; height:250px">
+  <div class="worth" style="top:1135px">שווי: <b style="font-weight:500">1,000 ₪</b> לכל חדר</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 3 · how to enter -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:220px">״איך משתתפות?״</div>
+  <ol class="steps" style="top:470px">
+    <li><span class="n">1</span><span><b>עוקבות</b> אחרי <bdi dir="ltr">@roomstorytell_</bdi></span></li>
+    <li><span class="n">2</span><span><b>מספרות לי בתגובה</b> למה החדר של הילדים שלכן צריך מייקאובר <span style="opacity:.75">(אפשר גם לצרף תמונה)</span></span></li>
+    <li><span class="n">3</span><span><b>בונוס:</b> משתפות את הפוסט בסטורי</span></li>
+  </ol>
+  <div class="body" style="top:1060px; font-size:32px">אני אבחר <b>3 סיפורים</b> שהכי נגעו בי 🤍</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 4 · examples -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:220px; font-size:72px">״ככה זה יכול להיראות אצלכן״</div>
+  <img class="photo" data-src="boys.png" style="right:80px; top:440px; width:520px; height:600px">
+  <img class="photo" data-src="blue.png" style="left:80px; top:500px; width:400px; height:560px">
+  <div class="tag" style="right:100px; top:1060px">הדמיות של עיצובים שלי</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- 5 · dates + rules -->
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:220px">״מתי?״</div>
+  <div class="date" style="top:420px">
+    <div><small>ההשתתפות נסגרת</small><b>26.11</b><span>יום חמישי, 23:59</span></div>
+    <div><small>הזוכות יוכרזו</small><b>29.11</b><span>יום ראשון, בסטורי</span></div>
+  </div>
+  <div class="fine" style="top:720px">
+    • אפשר להשתתף מגיל 18, תושבות ישראל, עם פרופיל אינסטגרם.<br>
+    • הזוכות ייבחרו לפי שיקול דעתי, לפי הסיפורים בתגובות. זו לא הגרלה.<br>
+    • הפרס: עיצוב חדר ילדים אונליין לפי חבילת העיצוב הבסיסית. אין המרה לכסף, ורהיטים ופריטים אינם כלולים.<br>
+    • הזוכות מסכימות שאצלם ואפרסם את החדר לפני ואחרי, בלי פרטים מזהים של הילדים.<br>
+    • אצור קשר עם הזוכות בהודעה פרטית. אם זוכה לא תענה תוך 3 ימים, אבחר זוכה אחרת.<br>
+    • התחרות אינה ממומנת, מאושרת או מנוהלת על ידי אינסטגרם או מטא.<br>
+    • התקנון המלא נמצא בכיתוב של הפוסט.
+  </div>
+  <div class="body" style="top:1120px; font-size:34px">בהצלחה לכולן! <b>אני כבר מחכה לקרוא אתכן</b> 🤍</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<!-- stories -->
+<section class="story">
+  <img class="photo" data-src="noa.png" style="right:90px; left:90px; top:700px; width:900px; height:820px">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:330px; font-size:96px">״יש לי מתנה בשבילכן״ 🎁</div>
+  <div class="body" style="top:540px">3 חדרי ילדים בעיצוב, <b>במתנה</b></div>
+</section>
+
+<section class="story">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:330px">״איך משתתפות?״</div>
+  <ol class="steps" style="top:560px; right:110px; left:110px">
+    <li><span class="n">1</span><span><b>עוקבות</b> אחריי</span></li>
+    <li><span class="n">2</span><span><b>מספרות בתגובה בפוסט</b> למה החדר צריך מייקאובר</span></li>
+    <li><span class="n">3</span><span><b>משתפות</b> בסטורי (בונוס)</span></li>
+  </ol>
+  <div class="sticker" style="top:1180px">כאן שמים סטיקר של קישור לפוסט</div>
+</section>
+
+<section class="story">
+  <img class="photo" data-src="boys.png" style="right:90px; left:90px; top:620px; width:900px; height:600px">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:330px">״נשארו עוד כמה ימים״</div>
+  <div class="sticker" style="top:1300px">כאן שמים סטיקר ספירה לאחור עד 26.11</div>
+</section>
+
+<script>
+const base = new URLSearchParams(location.search).get("img") || "assets/";
+document.querySelectorAll("img[data-src]").forEach(i => i.src = base + i.dataset.src);
+</script>
+</body></html>
