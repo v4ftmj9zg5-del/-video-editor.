@@ -6,7 +6,7 @@ reverb, ducked under the voice. SFX: whoosh on every cut, tick on step numbers,
 paper slides, a sparkle on the call to action.
 
 Usage: reel_audio.py PLAN.json OUT.wav
-PLAN = {"bpm": 90, "scenes": [beats...], "vo": [{"file": path, "scene": i, "offset": s}], "whooshes": [i, ...],
+PLAN = {"bpm": 90, "style": "gentle" (optional: felt piano, no shaker), "scenes": [beats...], "vo": [{"file": path, "scene": i, "offset": s}], "whooshes": [i, ...],
         "papers": [[scene, offset], ...], "ticks": [scene, ...], "sparkle": [scene, offset]}
 """
 import json
@@ -33,11 +33,14 @@ def env_adsr(n, a, d, s, r, sr=SR):
     return e
 
 
-def keys(freq, dur, vel):
-    """Soft electric-piano tine: decaying fundamental + quickly decaying overtone."""
+def keys(freq, dur, vel, soft=False):
+    """Soft electric-piano tine: decaying fundamental + quickly decaying overtone (soft=True: felt piano)."""
     n = int(dur * SR)
     t = np.arange(n) / SR
-    body = np.sin(2 * np.pi * freq * t) * np.exp(-t * 2.2)
+    body = np.sin(2 * np.pi * freq * t) * np.exp(-t * (1.1 if soft else 2.2))
+    if soft:
+        att = np.minimum(1, t / .03)
+        return vel * att * (body + .08 * np.sin(2 * np.pi * freq * 2 * t) * np.exp(-t * 6))
     tine = .35 * np.sin(2 * np.pi * freq * 2 * t) * np.exp(-t * 9) + .12 * np.sin(2 * np.pi * freq * 3.01 * t) * np.exp(-t * 14)
     att = np.minimum(1, t / .006)
     return vel * att * (body + tine)
@@ -139,7 +142,7 @@ def read_wav(path):
     return a
 
 
-def music(total_beats, bpm, hook_beats):
+def music(total_beats, bpm, hook_beats, gentle=False):
     beat = 60 / bpm
     total = total_beats * beat + 2.5
     out = np.zeros(int(total * SR))
@@ -154,8 +157,8 @@ def music(total_beats, bpm, hook_beats):
         last = b == bars - 1
         p = pad([note(m - 12) for m in tones[:3]], 4 * beat + (2.2 if last else .9))
         i0 = int(t0 * SR)
-        out[i0:i0 + len(p)] += .55 * p[: len(out) - i0]
-        bs = bass(note(root[0]), 2 * beat + .3, .5)
+        out[i0:i0 + len(p)] += (.8 if gentle else .55) * p[: len(out) - i0]
+        bs = bass(note(root[0]), 2 * beat + .3, .18 if gentle else .5)
         for k in (0, 2):
             j = int((t0 + k * beat) * SR)
             out[j:j + len(bs)] += bs[: len(out) - j]
@@ -165,18 +168,20 @@ def music(total_beats, bpm, hook_beats):
                 break
             m = tones[arp[e]] + (12 if e in (3, 6) else 0)
             vel = .16 if e % 2 else .22
+            if gentle and e % 2:                       # gentle: quarter notes only
+                continue
             if b * 4 < hook_beats and e % 2:          # sparser during the hook
                 continue
-            s = keys(note(m), 1.6, vel)
+            s = keys(note(m), 2.4 if gentle else 1.6, vel * (.8 if gentle else 1), soft=gentle)
             j = int(te * SR)
             out[j:j + len(s)] += s[: len(out) - j]
-            if b * 4 >= hook_beats and not last and e % 2:   # shaker on off-beats after the hook
+            if not gentle and b * 4 >= hook_beats and not last and e % 2:   # shaker on off-beats after the hook
                 sh = noise_burst(.05, lp=.6, level=.05) * np.exp(-np.arange(int(.05 * SR)) / SR * 70)
                 perc[j:j + len(sh)] += sh[: len(perc) - j]
-    end_chord = keys(note(74), 2.2, .18) + keys(note(78), 2.2, .14)   # final D/F# shimmer
+    end_chord = keys(note(74), 2.2, .18, soft=gentle) + keys(note(78), 2.2, .14, soft=gentle)   # final D/F# shimmer
     j = int((total_beats * beat - .05) * SR)
     out[j:j + len(end_chord)] += end_chord[: len(out) - j]
-    mix = reverb(out) + perc
+    mix = (reverb(out, secs=2.6, wet=.4) if gentle else reverb(out)) + perc
     fade = int(1.2 * SR)
     mix[-fade:] *= np.linspace(1, 0, fade)
     return mix
@@ -190,7 +195,7 @@ def main(plan_path, out):
     total = sum(beats) * beat
     n = int(total * SR)
 
-    mus = music(sum(beats), bpm, beats[0])[:n]
+    mus = music(sum(beats), bpm, beats[0], gentle=P.get("style") == "gentle")[:n]
     mus = np.pad(mus, (0, max(0, n - len(mus))))
 
     vo = np.zeros(n)
