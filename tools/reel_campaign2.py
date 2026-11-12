@@ -205,10 +205,15 @@ class Ad2:
             fr = put(fr, lay, 250, a, -20 * (1 - a))
         cap = self.caps.get(name)
         if cap and name != "cta":
-            pill = (*CREAM, 228)
-            lines = wrap(cap, self.f["cap"], 700)
-            lay = text_layer(lines, [self.f["cap"]] * len(lines), INK, pill=pill, gap=1.12)
-            fr = put(fr, lay, 1340, ease_out((tt - .08) / .2) * (1 - ease_io((tt - (d - .12)) / .12)))
+            segs = cap if isinstance(cap, list) else [[0.0, cap]]          # [[start_s, text], ...]
+            for k, (st, txt) in enumerate(segs):
+                end = segs[k + 1][0] if k + 1 < len(segs) else d
+                if not (st - .05 <= tt < end):
+                    continue
+                lines = wrap(txt, self.f["cap"], 700)
+                lay = text_layer(lines, [self.f["cap"]] * len(lines), INK, pill=(*CREAM, 228), gap=1.12)
+                a = ease_out((tt - st + .05) / .2) * (1 - ease_io((tt - (end - .12)) / .12))
+                fr = put(fr, lay, 1340, a)
         return fr
 
 
