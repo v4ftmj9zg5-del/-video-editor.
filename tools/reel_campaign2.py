@@ -145,7 +145,7 @@ class Ad2:
         bg = np.empty((H, W, 3), np.float32)
         bg[:] = (252, 251, 248)
         p = self._plan
-        drawn = np.clip((t * 1.35 - self.plan_order) * 14, 0, 1)
+        drawn = np.clip((t * 1.3 + .15 - self.plan_order) * 14, 0, 1)
         drawn = np.where(self.plan_ink > .5, drawn, np.clip((t - .55) / .3, 0, 1))
         img = 255 - (255 - p) * drawn[..., None]
         return card_on(bg, img, W / 2 + 20 * (ease_io(t) - .5), H * .44, 1000, alpha=1, shadow=.15)
