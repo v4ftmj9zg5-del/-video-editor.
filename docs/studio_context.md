@@ -65,3 +65,11 @@ VO; confirm Noa's socket location.
   curtains (10.2 s): list / practical-tip reels hold attention best.
 - Weakest: lighting reel 19 Oct (84% skip, 174 views): hook didn't stop the scroll.
 - Main gaps: first 3 seconds, and almost no saves/shares (needs save-worthy, specific tips).
+
+## Render notes (2026-11-12)
+- Fresh containers may lack the Hebrew fonts: get them with `npm pack @fontsource/frank-ruhl-libre @fontsource/heebo`,
+  merge hebrew+latin woff to ttf with fontTools (GitHub raw fonts were blocked by the proxy).
+- This ffmpeg's libass rendered Hebrew reversed; render text cards with PIL (raqm, direction="rtl")
+  and overlay them with alpha fades instead. Always check a frame.
+- Card style used for her reels: cream box (245,238,230) rounded 10, chocolate text (80,54,37),
+  Frank Ruhl Libre 500, centred around y=560-640.
