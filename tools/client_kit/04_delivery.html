@@ -1,0 +1,134 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>קובץ מסירה</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  .cover { padding: 0; background: var(--cream); }
+  .cover .hero { height: 178mm; background: url("sample/render1.jpg") center 60%/cover; }
+  .cover .body { padding: 14mm 20mm; }
+  .cover h1 { font-size: 36pt; }
+  .palette { display: flex; gap: 5mm; margin: 4mm 0 2mm; }
+  .palette div { text-align: center; font-size: 8.5pt; color: var(--muted); }
+  .palette .swatch { width: 20mm; height: 20mm; margin: 0 0 2mm; }
+  .renders { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 4mm; }
+  .renders figure { margin: 0; }
+  .renders img { width: 100%; height: 105mm; object-fit: cover; border-radius: 2mm; display: block; }
+  .renders figcaption { font-size: 8.5pt; color: var(--muted); margin-top: 1.5mm; }
+  .big img { width: 100%; height: 120mm; object-fit: cover; border-radius: 2mm; }
+  td.n { white-space: nowrap; }
+  .cat td { background: var(--cream); font-weight: 600; font-size: 8.5pt; letter-spacing: .06em; color: var(--rose-ink); }
+</style></head><body>
+
+<!-- 1 · cover -->
+<section class="page cover">
+  <div class="hero"></div>
+  <div class="body">
+    <div class="eyebrow">Room Story Tell · עיצוב אונליין</div>
+    <h1>החדר של <span class="ph">{{שם}}</span></h1>
+    <div class="rule"></div>
+    <p class="lead"><span class="ph">{{משפט אחד על הסיפור של החדר, למשל: חדר רך ושקט לתינוקת שתגדל איתו, עם פינה של ספרים ואור חם לערב.}}</span></p>
+    <p class="small muted" style="margin-top:8mm">הוכן עבור משפחת <span class="ph">{{שם}}</span> · <span class="ph">{{תאריך}}</span></p>
+  </div>
+</section>
+
+<!-- 2 · concept -->
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow">הקונספט</div>
+  <h1>הסיפור של החדר</h1>
+  <div class="rule"></div>
+  <p class="lead"><span class="ph">{{2–3 משפטים: מה הילד/ה אוהב/ת, מה ביקשתם, ואיך זה מתורגם לעיצוב.}}</span></p>
+
+  <h2>פלטת הצבעים</h2>
+  <div class="palette">
+    <div><span class="swatch" style="display:block;background:#F5EDE1"></span>שמנת</div>
+    <div><span class="swatch" style="display:block;background:#E9D3CB"></span>ורוד עתיק</div>
+    <div><span class="swatch" style="display:block;background:#D7DFCC"></span>מרווה</div>
+    <div><span class="swatch" style="display:block;background:#C9A98B"></span>עץ טבעי</div>
+    <div><span class="swatch" style="display:block;background:#4A3226"></span>שוקולד</div>
+  </div>
+  <p class="small muted">דוגמה. מחליפים לפלטה של כל פרויקט.</p>
+
+  <div class="grid2" style="margin-top:4mm">
+    <div class="card sage"><h3 style="margin-top:0">חומרים וטקסטורות</h3>
+      <ul class="tick"><li><span class="ph">{{עץ אלון בהיר}}</span></li><li><span class="ph">{{פשתן ובד רך}}</span></li><li><span class="ph">{{קש וקלוע}}</span></li></ul></div>
+    <div class="card rose"><h3 style="margin-top:0">שלושת הדברים שעושים את החדר</h3>
+      <ol class="steps" style="margin-top:2mm"><li><span class="ph">{{נקודת מוקד}}</span></li><li><span class="ph">{{תאורה}}</span></li><li><span class="ph">{{פרט אישי לילד/ה}}</span></li></ol></div>
+  </div>
+
+  <h2>התוכנית בחדר</h2>
+  <p><span class="ph">{{איפה עומדת המיטה ולמה, איפה האחסון, איפה פינת המשחק/הנקה. אפשר להוסיף כאן תוכנית קומה.}}</span></p>
+  <div class="folio"><span>החדר של {{שם}}</span><span>2</span></div>
+</section>
+
+<!-- 3 · renders -->
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow">ההדמיה</div>
+  <h1>ככה זה ייראה</h1>
+  <div class="big"><img src="sample/render1.jpg" alt=""></div>
+  <div class="renders">
+    <figure><img src="sample/render2.jpg" alt=""><figcaption><span class="ph">{{זווית 2: הקיר של הארון והאחסון}}</span></figcaption></figure>
+    <figure style="display:flex;flex-direction:column;justify-content:center">
+      <div class="card"><h3 style="margin-top:0">שימי לב</h3>
+        <p class="small"><span class="ph">{{פרט שחשוב לראות בהדמיה, למשל: המדפים בגובה שהילד/ה מגיע/ה אליו לבד.}}</span></p></div>
+      <p class="small muted" style="margin-top:4mm">ההדמיה היא המחשה. ייתכנו הבדלים קלים בגוון ובחומר מול המוצרים במציאות.</p>
+    </figure>
+  </div>
+  <div class="folio"><span>החדר של {{שם}}</span><span>3</span></div>
+</section>
+
+<!-- 4 · shopping list -->
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow">רשימת הקניות</div>
+  <h1>מה קונים</h1>
+  <p class="small muted">כל הקישורים נמצאים בקובץ האקסל המצורף. המחירים נכונים ליום המסירה.</p>
+  <table class="items">
+    <thead><tr><th>#</th><th>פריט</th><th>חנות</th><th>מידות</th><th class="n">מחיר</th><th>חלופה חסכונית</th></tr></thead>
+    <tbody>
+      <tr class="cat"><td colspan="6">רהיטים</td></tr>
+      <tr><td>1</td><td><span class="ph">{{מיטה}}</span></td><td><span class="ph">{{חנות}}</span></td><td><span class="ph">{{ר×ע×ג}}</span></td><td class="n"><span class="ph">{{₪}}</span></td><td><span class="ph">{{פריט · ₪}}</span></td></tr>
+      <tr><td>2</td><td><span class="ph">{{שידה}}</span></td><td><span class="ph">{{חנות}}</span></td><td><span class="ph">{{ר×ע×ג}}</span></td><td class="n"><span class="ph">{{₪}}</span></td><td>—</td></tr>
+      <tr class="cat"><td colspan="6">תאורה</td></tr>
+      <tr><td>3</td><td><span class="ph">{{מנורת תקרה}}</span></td><td><span class="ph">{{חנות}}</span></td><td><span class="ph">{{קוטר}}</span></td><td class="n"><span class="ph">{{₪}}</span></td><td>—</td></tr>
+      <tr class="cat"><td colspan="6">טקסטיל</td></tr>
+      <tr><td>4</td><td><span class="ph">{{וילון}}</span></td><td><span class="ph">{{חנות}}</span></td><td><span class="ph">{{ר×ג}}</span></td><td class="n"><span class="ph">{{₪}}</span></td><td><span class="ph">{{פריט · ₪}}</span></td></tr>
+      <tr><td>5</td><td><span class="ph">{{שטיח}}</span></td><td><span class="ph">{{חנות}}</span></td><td><span class="ph">{{ר×א}}</span></td><td class="n"><span class="ph">{{₪}}</span></td><td>—</td></tr>
+      <tr class="cat"><td colspan="6">אקססוריז</td></tr>
+      <tr><td>6</td><td><span class="ph">{{מדף / סלסלות / תמונות}}</span></td><td><span class="ph">{{חנות}}</span></td><td></td><td class="n"><span class="ph">{{₪}}</span></td><td>—</td></tr>
+      <tr class="total"><td></td><td colspan="3">סה״כ משוער</td><td class="n"><span class="ph">{{₪}}</span></td><td class="small muted">עם חלופות: <span class="ph">{{₪}}</span></td></tr>
+    </tbody>
+  </table>
+  <div class="folio"><span>החדר של {{שם}}</span><span>4</span></div>
+</section>
+
+<!-- 5 · next steps -->
+<section class="page">
+  <div class="brand"><span>Room Story Tell</span><span>Kids &amp; Nursery Design</span></div>
+  <div class="eyebrow sage">מה עכשיו</div>
+  <h1>יוצאים לדרך</h1>
+  <div class="rule"></div>
+
+  <h2>סדר הקניות המומלץ</h2>
+  <ol class="steps sage">
+    <li><strong>צבע וטפט קודם.</strong> לפני שנכנסים רהיטים.</li>
+    <li><strong>רהיטים גדולים.</strong> להם זמני האספקה הארוכים ביותר. כדאי לבדוק מידות מול החדר לפני ההזמנה.</li>
+    <li><strong>תאורה ווילונות.</strong> הם משנים את האווירה הכי מהר.</li>
+    <li><strong>טקסטיל ואקססוריז בסוף.</strong> כך רואים מה באמת חסר.</li>
+  </ol>
+
+  <h2>בטיחות בחדר ילדים</h2>
+  <ul class="tick">
+    <li>לעגן לקיר שידות, כונניות וארונות. גם נמוכים.</li>
+    <li>חוטים של וילונות ותריסים מחוץ להישג יד.</li>
+    <li>בעריסה ובמיטת תינוק: מזרן צמוד ובלי כריות, שמיכות פוך או בובות.</li>
+    <li>מדפים ותמונות מעל המיטה: רק קלים ומחוזקים היטב, או בכלל לא.</li>
+  </ul>
+
+  <div class="card rose" style="margin-top:8mm">
+    <strong>כשהחדר מוכן, אשמח לראות! 🤍</strong><br>
+    שלחי לי תמונה (ואם בא לך, משפט על התהליך). בהצלחה עם החדר החדש.
+    <p class="small muted" style="margin:3mm 0 0">תמר · Room Story Tell · <span class="ph">{{טלפון}}</span> · @roomstorytell_</p>
+  </div>
+  <div class="folio"><span>החדר של {{שם}}</span><span>5</span></div>
+</section>
+</body></html>
