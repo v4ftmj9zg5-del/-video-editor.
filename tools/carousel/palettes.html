@@ -1,0 +1,99 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>carousel · palette to room</title>
+<!-- "One palette, one room": cover, then for each palette a swatch slide followed by its room render, then a CTA.
+     Images resolve from ?img=<dir>/ (1.png .. 4.png); same visual language as intro.html. -->
+<style>
+@font-face { font-family: "Gveret"; src: url("file:///root/.fonts/GveretLevin.ttf"); }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo-300.ttf"); font-weight: 300; }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo-400.ttf"); font-weight: 400; }
+@font-face { font-family: "Heebo"; src: url("file:///root/.fonts/Heebo-500.ttf"); font-weight: 500; }
+:root { --bg: #F0EEE7; --ink: #111; --soft: #3d3a36; --sage: #6E7F5E; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #888; font-family: "Heebo"; }
+.slide { width: 1080px; height: 1350px; background: var(--bg); position: relative; overflow: hidden; direction: rtl; color: var(--ink); margin-bottom: 20px; }
+.handle { position: absolute; top: 106px; left: 108px; direction: ltr; font: 400 25px "Heebo"; letter-spacing: .08em; z-index: 2; }
+.num { position: absolute; top: 100px; right: 108px; font: 300 30px "Heebo"; letter-spacing: .1em; color: var(--soft); z-index: 2; }
+.bar { position: absolute; bottom: 104px; left: 108px; right: 98px; display: flex; justify-content: space-between; direction: ltr;
+       font: 400 26px "Heebo"; letter-spacing: .02em; align-items: center; z-index: 2; }
+.bar span { display: flex; align-items: center; gap: 22px; }
+.bar svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.hand { font-family: "Gveret"; font-size: 92px; line-height: 1.2; position: absolute; right: 100px; left: 100px; }
+.sub { position: absolute; right: 108px; left: 108px; font: 300 38px "Heebo"; color: var(--soft); }
+
+/* palette slide */
+.sw { position: absolute; right: 108px; left: 108px; height: 118px; border-radius: 34px; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 52px; }
+.sw b { font: 400 40px "Heebo"; }
+.sw i { font: 400 26px "Heebo"; font-style: normal; letter-spacing: .14em; direction: ltr; unicode-bidi: isolate; opacity: .85; }
+.next { position: absolute; left: 108px; top: 1135px; font: 300 30px "Heebo"; color: var(--soft); }
+
+/* room slide */
+.room img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.room::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(25,20,16,.55), rgba(0,0,0,0) 32%),
+               linear-gradient(to bottom, rgba(25,20,16,.35), rgba(0,0,0,0) 20%); }
+.room .handle, .room .num, .room .bar { color: #fff; }
+.room .cap { position: absolute; right: 100px; bottom: 190px; z-index: 2; color: #fff; }
+.room .cap .t { font-family: "Gveret"; font-size: 84px; line-height: 1.1; }
+.room .cap .s { font: 300 34px "Heebo"; opacity: .95; margin-top: 6px; }
+.room .dots { position: absolute; left: 108px; bottom: 200px; display: flex; gap: 12px; z-index: 2; }
+.room .dots span { width: 46px; height: 46px; border-radius: 50%; border: 3px solid rgba(255,255,255,.9); }
+
+/* cover */
+.grid { position: absolute; right: 80px; left: 80px; top: 470px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.grid div { height: 300px; border-radius: 24px; overflow: hidden; position: relative; }
+.grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.grid .strip { position: absolute; bottom: 0; left: 0; right: 0; height: 26px; display: flex; }
+.grid .strip span { flex: 1; }
+</style></head><body>
+
+<section class="slide" id="cover">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:200px">״פלטה אחת,<br>חדר אחד״</div>
+  <div class="grid"></div>
+  <div class="sub" style="top:1125px; font-size:32px">4 שילובי צבעים, ואיך הם נראים בחדר ילדים 👉</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<div id="pairs"></div>
+
+<section class="slide">
+  <div class="handle">@ROOMSTORYTELL</div>
+  <div class="hand" style="top:300px">״איזו פלטה<br>הכי שלך?״</div>
+  <div class="sub" style="top:640px; font-size:44px; line-height:1.6">כתבי לי בתגובות <b style="font-weight:500">1, 2, 3 או 4</b> 💬<br><br>
+    ורוצה שאבנה פלטה כזו<br>לחדר של הילדים שלך?<br>כתבי לי <b style="font-weight:500">״חדר״</b> בהודעה 🤍</div>
+  <div class="bar"><span><svg viewBox="0 0 24 24"><path d="M3 4l18 7-18 7 4-7-4-7z M7 11h14"/></svg>SHARE</span><span>SAVE<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></span></div>
+</section>
+
+<script>
+const IMG = new URLSearchParams(location.search).get("img") || "assets/";
+const P = [
+  { t: "גן ורדים יבש", s: "לחדר תינוקת", c: [["מרווה יבשה","7A816C"],["ורוד מאובק","D1A9A5"],["חלודה דהויה","AE6965"],["אלון חם","A58B71"],["עצם","E5DFD6"]] },
+  { t: "נמל שקט", s: "לחדר תינוק", c: [["מרווה","8F907E"],["שמנת","F9F7F1"],["ערפל ים","C0CACE"],["פטרייה","C7C3B0"],["כחול פלדה","6B7B84"]] },
+  { t: "הרפתקה במדבר", s: "לחדר משותף לאחים", c: [["טרקוטה","974315"],["כחול דולפין","788990"],["בז׳ ורדרד","E3D6C5"],["פנינה","F0EDE4"],["ירוק בהיר","8D957E"]] },
+  { t: "רטרו אדום", s: "לחדר של ילד גדול", c: [["אפור חם","B5B2AB"],["תכלת","9BAFC7"],["פחם","4D5661"],["טאופ","726B65"],["אדום עמוק","80181D"]] },
+];
+const bar = document.querySelector(".bar").outerHTML;
+const light = h => { const n = parseInt(h, 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (r * .299 + g * .587 + b * .114) > 150; };
+const out = document.getElementById("pairs");
+P.forEach((p, i) => {
+  const sw = p.c.map(([n, h], k) => `<div class="sw" style="top:${430 + k * 138}px; background:#${h}; color:${light(h) ? "#2b2622" : "#F7F3EC"}${h === "F9F7F1" || h === "F0EDE4" ? "; box-shadow: inset 0 0 0 2px #e2dbcf" : ""}"><b>${n}</b><i>#${h}</i></div>`).join("");
+  out.insertAdjacentHTML("beforeend", `
+  <section class="slide">
+    <div class="handle">@ROOMSTORYTELL</div><div class="num">0${i + 1}</div>
+    <div class="hand" style="top:200px">״${p.t}״</div>
+    <div class="sub" style="top:340px">${p.s}</div>
+    ${sw}
+    <div class="next">ככה זה נראה בחדר ←</div>
+    ${bar}
+  </section>
+  <section class="slide room">
+    <img src="${IMG}${i + 1}.png">
+    <div class="handle">@ROOMSTORYTELL</div><div class="num">0${i + 1}</div>
+    <div class="cap"><div class="t">${p.t}</div><div class="s">${p.s} · הדמיה</div></div>
+    <div class="dots">${p.c.map(([, h]) => `<span style="background:#${h}"></span>`).join("")}</div>
+    ${bar}
+  </section>`);
+});
+document.querySelector(".grid").innerHTML = P.map((p, i) =>
+  `<div><img src="${IMG}${i + 1}.png"><div class="strip">${p.c.map(([, h]) => `<span style="background:#${h}"></span>`).join("")}</div></div>`).join("");
+</script>
+</body></html>
